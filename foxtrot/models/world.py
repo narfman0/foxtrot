@@ -31,4 +31,13 @@ class World:
 
     def create_player(self, chunk_tuple):
         chunk_x, chunk_y, chunk = chunk_tuple
-        self.player = NPC(x=chunk_x, y=chunk_y)
+        x = chunk_x
+        y = chunk_y
+        offset = chunk.size // 2 + 5 + random.randint(0, 2)
+        if random.choice([True, False]):
+            offset *= -1
+        if random.choice([True, False]):
+            x += offset
+        else:
+            y += offset
+        self.player = NPC(x=x, y=y)

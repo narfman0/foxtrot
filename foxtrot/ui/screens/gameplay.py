@@ -46,8 +46,10 @@ class GameplayScreen:
         for chunk_x, chunk_y, tile in chunk.tiles:
             world_x = (x - chunk.size // 2 + chunk_x) - self.world.player.x
             world_y = (y - chunk.size // 2 + chunk_y) - self.world.player.y
-            render_x = world_x * TILE_WIDTH + pyxel.width // 2
-            render_y = world_y * TILE_WIDTH + pyxel.height // 2
-            pyxel.text(
-                render_x - TILE_WIDTH // 2, render_y - TILE_WIDTH // 2, str(tile), 9
-            )
+            self.draw_tile(world_x, world_y, str(tile))
+
+    def draw_tile(self, x, y, tile):
+        """ Draw a tile given world coordinates x, y """
+        render_x = x * TILE_WIDTH + pyxel.width // 2
+        render_y = y * TILE_WIDTH + pyxel.height // 2
+        pyxel.text(render_x - TILE_WIDTH // 2, render_y - TILE_WIDTH // 2, str(tile), 9)
