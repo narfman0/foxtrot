@@ -1,5 +1,6 @@
 class NPC:
-    def __init__(self, x=0, y=0, dx=0, dy=0):
+    def __init__(self, name=None, x=0, y=0, dx=0, dy=0):
+        self.name = name
         self.x = x
         self.y = y
         self.dx = dx

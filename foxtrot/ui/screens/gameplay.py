@@ -1,9 +1,12 @@
 import pyxel
 
+from foxtrot.models.world import World
+
 
 class GameplayScreen:
     def __init__(self, screen_manager):
         self.screen_manager = screen_manager
+        self.world = World()
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_BACKSPACE):
