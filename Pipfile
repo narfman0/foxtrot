@@ -5,3 +5,8 @@ name = "pypi"
 
 [packages]
 pyxel = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-cov = "*"
+pytest-pylint = "*"

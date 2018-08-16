@@ -1,7 +1,7 @@
 import pyxel
 
-from foxtrot.components.menu import Menu
-from foxtrot.screens.gameplay import GameplayScreen
+from foxtrot.ui.components.menu import Menu
+from foxtrot.ui.screens.gameplay import GameplayScreen
 
 
 TITLE = "Main Screen"

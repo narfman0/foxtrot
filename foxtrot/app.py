@@ -1,6 +1,6 @@
 import pyxel
 
-from foxtrot.screens.menu import MenuScreen
+from foxtrot.ui.screens.menu import MenuScreen
 
 
 class App:

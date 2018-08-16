@@ -14,6 +14,17 @@ Run app with::
 
     make run
 
+Testing
+-------
+
+Install testing dependencies with::
+
+    make init-dev
+
+Run with::
+
+    make test
+
 License
 -------
 
