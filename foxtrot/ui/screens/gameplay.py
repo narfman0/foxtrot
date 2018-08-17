@@ -1,6 +1,6 @@
 import pyxel
 
-from foxtrot.models.world import World
+from foxtrot.models import NPC, World
 
 
 TILE_WIDTH = 8
@@ -14,14 +14,27 @@ class GameplayScreen:
     def update(self):
         if pyxel.btnp(pyxel.KEY_BACKSPACE):
             self.screen_manager.pop()
-        if pyxel.btnp(pyxel.KEY_DOWN):
-            self.world.player.y -= 1
-        if pyxel.btnp(pyxel.KEY_UP):
-            self.world.player.y += 1
-        if pyxel.btnp(pyxel.KEY_LEFT):
-            self.world.player.x -= 1
-        if pyxel.btnp(pyxel.KEY_RIGHT):
-            self.world.player.x += 1
+        if pyxel.btn(pyxel.KEY_DOWN):
+            if self.world.npc_in_chunk(self.world.player):
+                self.world.player.y -= NPC.VELOCITY_IN_GRAVITY
+            else:
+                self.world.player.dy -= NPC.EVA_ACCELERATION
+        if pyxel.btn(pyxel.KEY_UP):
+            if self.world.npc_in_chunk(self.world.player):
+                self.world.player.y += NPC.VELOCITY_IN_GRAVITY
+            else:
+                self.world.player.dy += NPC.EVA_ACCELERATION
+        if pyxel.btn(pyxel.KEY_LEFT):
+            if self.world.npc_in_chunk(self.world.player):
+                self.world.player.x -= NPC.VELOCITY_IN_GRAVITY
+            else:
+                self.world.player.dx -= NPC.EVA_ACCELERATION
+        if pyxel.btn(pyxel.KEY_RIGHT):
+            if self.world.npc_in_chunk(self.world.player):
+                self.world.player.x += NPC.VELOCITY_IN_GRAVITY
+            else:
+                self.world.player.dx += NPC.EVA_ACCELERATION
+        self.world.update()
 
     def draw(self):
         text = "x,y: %d,%d" % (self.world.player.x, self.world.player.y)

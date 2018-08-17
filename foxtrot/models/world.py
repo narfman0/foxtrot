@@ -20,6 +20,17 @@ class World:
             self.create_chunk(False)
         self.create_player(self.chunks[0])
 
+    def update(self):
+        """ Update every tick """
+        self.player.update(self)
+
+    def npc_in_chunk(self, npc):
+        """ return True if npc is in a chunk """
+        for chunk in self.chunks:
+            if chunk.aabb(npc.x, npc.y):
+                return True
+        return False
+
     def create_chunk(self, planet):
         """ Create a chunk with a generated position
         TODO ensure we dont collide with another chunk via bounding box
