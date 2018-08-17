@@ -29,7 +29,7 @@ class GameplayScreen:
         index = 1
         for chunk in self.world.chunks:
             color = 8
-            if self.chunk_visible(chunk):
+            if self.world.chunk_active(chunk):
                 self.draw_chunk(chunk, index)
                 color = 10
             text = "x,y: %d,%d" % (chunk.x, chunk.y)
@@ -45,13 +45,6 @@ class GameplayScreen:
             world_x = (chunk.x - chunk.size // 2 + tile_x) - self.world.player.x
             world_y = (chunk.y - chunk.size // 2 + tile_y) - self.world.player.y
             self.draw_tile(world_x, world_y, str(tile))
-
-    def chunk_visible(self, chunk):
-        cull_distance = pyxel.width // TILE_WIDTH
-        return (
-            abs(self.world.player.x - chunk.x) - chunk.size // 2 < cull_distance
-            and abs(self.world.player.y - chunk.y) - chunk.size // 2 < cull_distance
-        )
 
     def draw_tile(self, x, y, tile):
         """ Draw a tile given world coordinates x, y """

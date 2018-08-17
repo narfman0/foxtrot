@@ -38,3 +38,11 @@ class World:
         else:
             y += offset
         self.player = NPC(x=x, y=y)
+
+    def chunk_active(self, chunk):
+        """ Check if chunk should be active or not """
+        max_distance = 64
+        return (
+            abs(self.player.x - chunk.x) - chunk.size // 2 < max_distance
+            and abs(self.player.y - chunk.y) - chunk.size // 2 < max_distance
+        )
