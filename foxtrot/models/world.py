@@ -25,11 +25,11 @@ class World:
         self.player.update(self)
 
     def npc_in_chunk(self, npc):
-        """ return True if npc is in a chunk """
+        """ return chunk if npc is in a chunk """
         for chunk in self.chunks:
             if chunk.aabb(npc.x, npc.y):
-                return True
-        return False
+                return chunk
+        return None
 
     def create_chunk(self, planet):
         """ Create a chunk with a generated position
