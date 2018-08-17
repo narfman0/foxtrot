@@ -40,9 +40,8 @@ class Chunk:
     def passable(self, x, y):
         """ return True if the x,y coordinates are possible within chunk """
         try:
-            rel_x = int(x + .5) - self.x + self.size // 2
-            rel_y = int(y + .5) - self.y + self.size // 2
-            # print("relx: %d rely: %d x: %f y: %f" % (rel_x, rel_y, x, y))
+            rel_x = int(x) - self.x + self.size // 2
+            rel_y = int(y) - self.y + self.size // 2
             tile = self.tiles.grid[rel_x][rel_y]
             return (
                 tile == generator.FLOOR

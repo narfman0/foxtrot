@@ -13,10 +13,17 @@ class NPC:
         self.in_chunk = False
 
     def update(self, world):
-        self.chunk = world.npc_in_chunk(self)
-        self.in_chunk = self.chunk is not None
         self.x += self.dx
         self.y += self.dy
+        self.chunk = world.npc_in_chunk(self)
+
+        if self.chunk is not None and not self.in_chunk:
+            # we just entered a chunk, make sure its not on an impassable wall
+            if not self.chunk.passable(self.x, self.y):
+                self.x -= self.dx
+                self.y -= self.dy
+
+        self.in_chunk = self.chunk is not None
         if self.in_chunk:
             self.dx = 0
             self.dy = 0

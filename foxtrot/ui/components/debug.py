@@ -26,8 +26,8 @@ def draw_chunk_locations(screen):
 def draw_chunk_tile(screen):
     if screen.world.player.in_chunk:
         chunk = screen.world.player.chunk
-        player_rel_x = int(screen.world.player.x + .5) - chunk.x + chunk.size // 2
-        player_rel_y = int(screen.world.player.y + .5) - chunk.y + chunk.size // 2
+        player_rel_x = int(screen.world.player.x) - chunk.x + chunk.size // 2
+        player_rel_y = int(screen.world.player.y) - chunk.y + chunk.size // 2
         text = "chunk x,y length: %d,%d player_rel: %d,%d" % (
             len(chunk.tiles.grid),
             len(chunk.tiles.grid[0]),
