@@ -72,4 +72,4 @@ class GameplayScreen:
         """ Draw a tile given world coordinates x, y """
         render_x = x * TILE_WIDTH + pyxel.width // 2
         render_y = -y * TILE_WIDTH + pyxel.height // 2
-        pyxel.text(render_x - 1, render_y - 2, str(tile), 9)
+        pyxel.text(render_x + 2, render_y - 5, str(tile), 9)

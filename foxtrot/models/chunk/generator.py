@@ -462,6 +462,29 @@ class Generator:
             else:
                 cells.remove((x, y))
 
+    def generate_airlocks(self):
+        """ Create airlocks on either side, using corridors all the way out """
+        # create east/west airlocks
+        y = random.randint(self.height // 3, 2 * self.height // 3)
+        for x in range(0, self.width):
+            if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
+                break
+            self.grid[x][y] = CORRIDOR
+        for x in range(self.width - 1, 0, -1):
+            if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
+                break
+            self.grid[x][y] = CORRIDOR
+        # create north/south airlocks
+        x = random.randint(self.width // 3, 2 * self.width // 3)
+        for y in range(self.height - 1, 0, -1):
+            if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
+                break
+            self.grid[x][y] = CORRIDOR
+        for y in range(0, self.height):
+            if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
+                break
+            self.grid[x][y] = CORRIDOR
+
     def prune_deadends(self, amount):
         """
         Removes deadends from the corridors/maze

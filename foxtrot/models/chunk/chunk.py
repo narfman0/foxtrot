@@ -24,8 +24,9 @@ class Chunk:
         self.tiles = generator.Generator(self.size, self.size)
         self.tiles.place_random_rooms(8, 16, 2, 1, 100)
         self.tiles.generate_corridors("l")
-        self.tiles.connect_all_rooms(0)
         self.tiles.prune_deadends(50)
+        self.tiles.generate_airlocks()
+        self.tiles.connect_all_rooms(0)
         self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
         self.tiles.place_walls()
 
