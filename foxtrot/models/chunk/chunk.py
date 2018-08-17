@@ -39,15 +39,16 @@ class Chunk:
 
     def passable(self, x, y):
         """ return True if the x,y coordinates are possible within chunk """
-        # TODO evidently not working; not stopping players
         try:
             rel_x = int(x + .5) - self.x + self.size // 2
-            rel_y = int(y + .5) - self.x + self.size // 2
+            rel_y = int(y + .5) - self.y + self.size // 2
+            # print("relx: %d rely: %d x: %f y: %f" % (rel_x, rel_y, x, y))
             tile = self.tiles.grid[rel_x][rel_y]
             return (
                 tile == generator.FLOOR
                 or tile == generator.CORRIDOR
                 or tile == generator.DOOR
             )
-        except IndexError:
+        except IndexError as e:
+            print("Exception determining chunk passability: %s" % str(e))
             return True
