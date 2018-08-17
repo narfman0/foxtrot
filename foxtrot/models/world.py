@@ -20,19 +20,16 @@ class World:
             self.create_chunk(False)
         self.create_player(self.chunks[0])
 
-    def create_chunk(self, planet, max_size=10000):
+    def create_chunk(self, planet):
         """ Create a chunk with a generated position
         TODO ensure we dont collide with another chunk via bounding box
         """
         chunk = Chunk(random)
-        x = random.randint(chunk.size // 2, max_size - chunk.size // 2)
-        y = random.randint(chunk.size // 2, max_size - chunk.size // 2)
-        self.chunks.append((x, y, chunk))
+        self.chunks.append(chunk)
 
-    def create_player(self, chunk_tuple):
-        chunk_x, chunk_y, chunk = chunk_tuple
-        x = chunk_x
-        y = chunk_y
+    def create_player(self, chunk):
+        x = chunk.x
+        y = chunk.y
         offset = chunk.size // 2 + 5 + random.randint(0, 2)
         if random.choice([True, False]):
             offset *= -1

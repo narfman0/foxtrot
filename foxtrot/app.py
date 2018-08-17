@@ -6,7 +6,9 @@ from foxtrot.ui.screens.menu import MenuScreen
 class App:
     def __init__(self):
         self.screens = [MenuScreen(self)]
-        pyxel.init(256, 192, caption="foxtrot")
+        pyxel.constants.APP_MAX_WINDOW_SIZE = 3840
+        pyxel.constants.DRAW_MAX_COUNT = 2 ** 16
+        pyxel.init(480, 320, caption="foxtrot")
         pyxel.run(self.update, self.draw)
 
     def update(self):
