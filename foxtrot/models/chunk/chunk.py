@@ -68,3 +68,17 @@ class Chunk:
         except IndexError as e:
             logger.warn("Exception determining chunk passability: %s", e)
             return True
+
+    def get_room(self, x, y):
+        """ return room if x,y coordinates lie within a room """
+        rel_x = int(x) - self.x + self.width // 2
+        rel_y = int(y) - self.y + self.height // 2
+        for room in self.tiles.rooms:
+            if (
+                x >= room.x
+                and x <= room.x + room.width
+                and y >= room.y
+                and y <= room.y + room.height
+            ):
+                return room
+        return None

@@ -58,6 +58,11 @@ class GameplayScreen:
         if DEBUG:
             debug.draw(self)
         self.draw_player()
+        if self.world.player.in_chunk:
+            text = self.world.player.chunk.name
+            if self.world.player.in_room and hasattr(self.world.player.room, "type"):
+                text += ", " + self.world.player.room.type.name
+            pyxel.text(pyxel.width / 2 - len(text) * 2, 4, text, 12)
 
     def draw_player(self):
         pyxel.circ(pyxel.width / 2, pyxel.height / 2, TILE_WIDTH // 2, 7)

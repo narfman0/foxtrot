@@ -11,6 +11,8 @@ class NPC:
         # some physics helpers, speeds things up
         self.chunk = None
         self.in_chunk = False
+        self.room = None
+        self.in_room = False
 
     def update(self, world):
         self.x += self.dx
@@ -23,7 +25,9 @@ class NPC:
                 self.x -= self.dx
                 self.y -= self.dy
 
-        self.in_chunk = self.chunk is not None
+        self.in_chunk = bool(self.chunk)
         if self.in_chunk:
             self.dx = 0
             self.dy = 0
+            self.room = self.chunk.get_room(self.x, self.y)
+            self.in_room = bool(self.room)
