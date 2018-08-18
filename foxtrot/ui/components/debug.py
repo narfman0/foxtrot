@@ -8,7 +8,7 @@ def draw(screen):
 
 
 def draw_player_location(screen):
-    text = "player x,y: %d,%d" % (screen.world.player.x, screen.world.player.y)
+    text = "Player x,y: %d,%d" % (screen.world.player.x, screen.world.player.y)
     pyxel.text(pyxel.width / 2 - len(text) * 2, 4, text, pyxel.frame_count % 16)
 
 
@@ -18,7 +18,7 @@ def draw_chunk_locations(screen):
         color = 8
         if screen.world.chunk_active(chunk):
             color = 10
-        text = "chunk x,y: %d,%d" % (chunk.x, chunk.y)
+        text = "%s x,y: %d,%d" % (type(chunk).__name__, chunk.x, chunk.y)
         pyxel.text(pyxel.width / 2 - len(text) * 2, 4 + 8 * index, text, color)
         index += 1
 
@@ -26,9 +26,10 @@ def draw_chunk_locations(screen):
 def draw_chunk_tile(screen):
     if screen.world.player.in_chunk:
         chunk = screen.world.player.chunk
-        player_rel_x = int(screen.world.player.x) - chunk.x + chunk.size // 2
-        player_rel_y = int(screen.world.player.y) - chunk.y + chunk.size // 2
-        text = "chunk x,y length: %d,%d player_rel: %d,%d" % (
+        player_rel_x = int(screen.world.player.x) - chunk.x + chunk.width // 2
+        player_rel_y = int(screen.world.player.y) - chunk.y + chunk.height // 2
+        text = "%s x,y length: %d,%d player_rel: %d,%d" % (
+            type(chunk).__name__,
             len(chunk.tiles.grid),
             len(chunk.tiles.grid[0]),
             player_rel_x,

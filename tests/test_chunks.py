@@ -9,6 +9,6 @@ class ChunksTest(TestCase):
         random.seed(0)
 
     def test_chunk_aabb(self):
-        chunk = Chunk(random, x=0, y=0, size=4)
+        chunk = Chunk(random, x=0, y=0, width=4, height=4)
         self.assertTrue(chunk.aabb(0, 0))
         self.assertFalse(chunk.aabb(5, 5))

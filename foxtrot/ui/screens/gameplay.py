@@ -64,8 +64,8 @@ class GameplayScreen:
 
     def draw_chunk(self, chunk):
         for tile_x, tile_y, tile in chunk.tiles:
-            world_x = (chunk.x - chunk.size // 2 + tile_x) - self.world.player.x
-            world_y = (chunk.y - chunk.size // 2 + tile_y) - self.world.player.y
+            world_x = (chunk.x - chunk.width // 2 + tile_x) - self.world.player.x
+            world_y = (chunk.y - chunk.height // 2 + tile_y) - self.world.player.y
             self.draw_tile(world_x, world_y, str(tile))
 
     def draw_tile(self, x, y, tile):
