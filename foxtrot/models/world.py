@@ -64,14 +64,14 @@ class World:
         else:
             y += offset
 
-        # need to generate a ship until we get at least 3 rooms:
+        # need to generate a ship with at least some # rooms:
         ship = None
         while ship is None:
             try:
                 ship = Ship(random, x=x, y=y, width=16, height=16)
-                if len(ship.tiles.rooms) < 3:
+                if len(ship.tiles.rooms) < Ship.MIN_ROOMS:
                     ship = None
-            except:
+            except Exception as e:
                 logger.warn("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
 

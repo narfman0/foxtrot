@@ -1,8 +1,19 @@
+from enum import Enum
+
 from foxtrot.models.chunk.chunk import Chunk
+
+
+class RoomType(Enum):
+    BRIDGE = 1
+    ENGINEERING = 2
+    WEAPONS = 3
+    LIFE = 4
+    CARGO = 5
 
 
 class Ship(Chunk):
     SIZES = [(16, 8), (32, 14), (64, 24)]
+    MIN_ROOMS = 4
 
     def __init__(
         self,
@@ -31,3 +42,5 @@ class Ship(Chunk):
             room_min_size=room_min_size,
             room_max_size=room_max_size,
         )
+        for room in range(Ship.MIN_ROOMS):
+            self.tiles.rooms[room].type = RoomType(1 + room)
