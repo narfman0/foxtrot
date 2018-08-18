@@ -3,6 +3,7 @@ coords, tiles, and possibly npcs. """
 import logging
 
 from foxtrot.models.chunk import generator
+from foxtrot.models import words
 
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ class Chunk:
         max_size=10000,
         room_min_size=8,
         room_max_size=16,
+        name=None,
     ):
         self.random = random
         self.width = width
@@ -33,6 +35,7 @@ class Chunk:
             if y is None
             else y
         )
+        self.name = name if name else words.generate(random)
         self.npcs = []
         self.tiles = generator.Generator(width=self.width, height=self.height)
         self.tiles.place_random_rooms(room_min_size, room_max_size, 2, 1, 200)
