@@ -1,10 +1,25 @@
 """ A chunk is a meaningful part of the world. It includes bounding box of
 coords, tiles, and possibly npcs. """
+import logging
+
 from foxtrot.models.chunk import generator
 
 
+logger = logging.getLogger(__name__)
+
+
 class Chunk:
-    def __init__(self, random, x=None, y=None, width=None, height=None, max_size=10000):
+    def __init__(
+        self,
+        random,
+        x=None,
+        y=None,
+        width=None,
+        height=None,
+        max_size=10000,
+        room_min_size=8,
+        room_max_size=16,
+    ):
         self.random = random
         self.width = width
         self.height = height
@@ -19,8 +34,8 @@ class Chunk:
             else y
         )
         self.npcs = []
-        self.tiles = generator.Generator(self.width, self.height)
-        self.tiles.place_random_rooms(8, 16, 2, 1, 100)
+        self.tiles = generator.Generator(width=self.width, height=self.height)
+        self.tiles.place_random_rooms(room_min_size, room_max_size, 2, 1, 200)
         self.tiles.generate_corridors("l")
         self.tiles.prune_deadends(50)
         self.tiles.generate_airlocks()
@@ -48,5 +63,5 @@ class Chunk:
                 or tile == generator.DOOR
             )
         except IndexError as e:
-            print("Exception determining chunk passability: %s" % str(e))
+            logger.warn("Exception determining chunk passability: %s", e)
             return True

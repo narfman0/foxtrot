@@ -1,8 +1,12 @@
 """ World contains multiple chunks, which are populated game sections """
+import logging
 import random
 
-from foxtrot.models.chunk import Planet, Station
+from foxtrot.models.chunk import Planet, Ship, Station
 from foxtrot.models.npc import NPC
+
+
+logger = logging.getLogger(__name__)
 
 
 class World:
@@ -19,6 +23,7 @@ class World:
         for _ in range(station_count):
             self.chunks.append(Station(random))
         self.create_player(self.chunks[0])
+        self.create_ship()
 
     def update(self):
         """ Update every tick """
@@ -34,7 +39,7 @@ class World:
     def create_player(self, chunk):
         x = chunk.x
         y = chunk.y
-        offset = 8 + random.randint(0, 2)
+        offset = 64 + random.randint(0, 32)
         horizontal = random.choice([True, False])
         if horizontal:
             offset += chunk.width // 2
@@ -47,6 +52,28 @@ class World:
         else:
             y += offset
         self.player = NPC(x=x, y=y)
+
+    def create_ship(self):
+        x = self.player.x
+        y = self.player.y
+        offset = random.randint(20, 24)
+        if random.choice([True, False]):
+            offset *= -1
+        if random.choice([True, False]):
+            x += offset
+        else:
+            y += offset
+
+        # need to generate a ship until we get at least 3 rooms:
+        ship = None
+        while ship is None:
+            try:
+                ship = Ship(random, x=x, y=y, width=16, height=16)
+                if len(ship.tiles.rooms) < 3:
+                    ship = None
+            except:
+                logger.warn("Failed to create ship with exception: %s, retrying", e)
+        self.chunks.append(ship)
 
     def chunk_active(self, chunk):
         """ Check if chunk should be active or not """

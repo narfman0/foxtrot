@@ -94,7 +94,7 @@ class Generator:
         ** once created these will not be re-instanced, therefore any user made changes to grid will also need to update these lists for them to remain valid
     """
 
-    def __init__(self, height, width, seed=None):
+    def __init__(self, height=None, width=None, seed=None):
         random.seed(seed)
         self.height = abs(height)
         self.width = abs(width)
