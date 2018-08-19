@@ -3,6 +3,9 @@ foxtrot
 
 demo pyxel based space game. not worth a second glance :)
 
+.. image:: https://travis-ci.org/narfman0/foxtrot.png?branch=master
+    :target: https://travis-ci.org/narfman0/foxtrot
+
 Getting started
 ---------------
 
@@ -16,12 +19,6 @@ Run app with::
 
 Testing
 -------
-
-Install testing dependencies with::
-
-    make init-dev
-
-Run with::
 
     make test
 
