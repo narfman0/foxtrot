@@ -4,7 +4,7 @@ from foxtrot.ui.components.menu import Menu
 from foxtrot.ui.screens.gameplay import GameplayScreen
 
 
-TITLE = "Main Screen"
+TITLE = "Foxtrot"
 
 
 class MenuScreen:

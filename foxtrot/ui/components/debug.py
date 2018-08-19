@@ -8,18 +8,18 @@ def draw(screen):
 
 
 def draw_player_location(screen):
-    text = "Player x,y: %d,%d" % (screen.world.player.x, screen.world.player.y)
-    pyxel.text(pyxel.width / 2 - len(text) * 2, 4, text, pyxel.frame_count % 16)
+    text = "%d,%d" % (screen.world.player.x, screen.world.player.y)
+    pyxel.text(4, pyxel.height - 12, text, 13)
 
 
 def draw_chunk_locations(screen):
-    index = 1
+    index = 0
     for chunk in screen.world.chunks:
         color = 8
         if screen.world.chunk_active(chunk):
             color = 10
         text = "%s x,y: %d,%d" % (type(chunk).__name__, chunk.x, chunk.y)
-        pyxel.text(pyxel.width / 2 - len(text) * 2, 4 + 8 * index, text, color)
+        pyxel.text(pyxel.width - len(text) * 4 - 4, 4 + 8 * index, text, color)
         index += 1
 
 
@@ -38,6 +38,6 @@ def draw_chunk_tile(screen):
         pyxel.text(4, 4, text, 7)
         try:
             text = "tile: " + str(chunk.tiles.grid[player_rel_x][player_rel_y])
-            pyxel.text(4, 12, text, 7)
+            pyxel.text(4, 20, text, 7)
         except:
             pass

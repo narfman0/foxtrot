@@ -75,10 +75,10 @@ class Chunk:
         rel_y = int(y) - self.y + self.height // 2
         for room in self.tiles.rooms:
             if (
-                x >= room.x
-                and x <= room.x + room.width
-                and y >= room.y
-                and y <= room.y + room.height
+                rel_x >= room.x
+                and rel_x <= room.x + room.width
+                and rel_y >= room.y
+                and rel_y <= room.y + room.height
             ):
                 return room
         return None
