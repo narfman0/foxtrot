@@ -36,12 +36,17 @@ class World:
     def update(self):
         """ Update every tick """
         self.player.update(self)
+        for chunk in self.chunks:
+            chunk.update()
 
     def create_player(self, chunk):
         x = chunk.x
         y = chunk.y
-        offset = self.distance_hint * self.tile_width + random.randint(0,
-                PLAYER_SPAWN_MAX_DISTANCE * self.tile_width) - PLAYER_SPAWN_MAX_DISTANCE
+        offset = (
+            self.distance_hint * self.tile_width
+            + random.randint(0, PLAYER_SPAWN_MAX_DISTANCE * self.tile_width)
+            - PLAYER_SPAWN_MAX_DISTANCE
+        )
         horizontal = random.choice([True, False])
         if horizontal:
             offset += chunk.width // 2
