@@ -12,8 +12,9 @@ DEBUG = True
 class GameplayScreen:
     def __init__(self, screen_manager):
         self.screen_manager = screen_manager
-        self.world = World()
         self.menus = []
+        distance_hint = pyxel.width // 2 // TILE_WIDTH
+        self.world = World(tile_width=TILE_WIDTH, distance_hint=distance_hint)
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_BACKSPACE):

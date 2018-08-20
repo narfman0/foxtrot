@@ -11,12 +11,18 @@ from foxtrot.models.npc import NPC
 logger = logging.getLogger(__name__)
 
 
+PLAYER_SPAWN_MAX_DISTANCE = 4
+
+
 class World:
-    def __init__(self, seed=None, size=0):
+    def __init__(self, seed=None, size=0, tile_width=8, distance_hint=8):
         """ Create world with given seed, will generate using system timestamp
         if none given. Size expected in the range (0-10)
+        :param int distance_hint: rough number of tiles away player should spawn
         """
         random.seed(seed)
+        self.tile_width = tile_width
+        self.distance_hint = distance_hint
         planet_count = random.randint(2 + size // 2, 3 + size // 2)
         station_count = random.randint(2 * size - 2, 2 * size + 2)
         self.chunks = []
@@ -34,7 +40,8 @@ class World:
     def create_player(self, chunk):
         x = chunk.x
         y = chunk.y
-        offset = 64 + random.randint(0, 32)
+        offset = self.distance_hint * self.tile_width + random.randint(0,
+                PLAYER_SPAWN_MAX_DISTANCE * self.tile_width) - PLAYER_SPAWN_MAX_DISTANCE
         horizontal = random.choice([True, False])
         if horizontal:
             offset += chunk.width // 2
