@@ -43,7 +43,7 @@ class Chunk:
         self.npcs = []
         self.tiles = generator.Generator(width=self.width, height=self.height)
         self.tiles.place_random_rooms(room_min_size, room_max_size, 2, 1, 200)
-        self.tiles.generate_corridors("l")
+        self.tiles.generate_corridors("f")
         self.tiles.prune_deadends(50)
         self.tiles.generate_airlocks()
         self.tiles.connect_all_rooms(0)

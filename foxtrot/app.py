@@ -8,7 +8,7 @@ class App:
         self.screens = [MenuScreen(self)]
         pyxel.constants.APP_MAX_WINDOW_SIZE = 3840
         pyxel.constants.DRAW_MAX_COUNT = 2 ** 16
-        pyxel.init(640, 480, caption="foxtrot")
+        pyxel.init(256, 256, caption="foxtrot")
         pyxel.run(self.update, self.draw)
 
     def update(self):
