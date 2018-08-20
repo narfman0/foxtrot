@@ -31,13 +31,6 @@ class World:
         """ Update every tick """
         self.player.update(self)
 
-    def npc_in_chunk(self, npc):
-        """ return chunk if npc is in a chunk """
-        for chunk in self.chunks:
-            if chunk.aabb(npc.x, npc.y):
-                return chunk
-        return None
-
     def create_player(self, chunk):
         x = chunk.x
         y = chunk.y
@@ -85,6 +78,12 @@ class World:
             and abs(self.player.y - chunk.y) - chunk.height // 2 < max_distance
         )
 
+    def fly(self, origin, destination):
+        x = destination.x - origin.x + destination.width // 2 + origin.width // 2 + 2
+        y = destination.y - origin.y
+        origin.move(x, y)
+        self.player.move(x, y)
+
     def get_destinations(self, x, y, sort=True):
         destinations = []
         for chunk in self.chunks:
@@ -93,3 +92,10 @@ class World:
                 destinations.append((distance, chunk))
         destinations = sorted(destinations, key=operator.itemgetter(0))
         return [destination[1] for destination in destinations]
+
+    def npc_in_chunk(self, npc):
+        """ return chunk if npc is in a chunk """
+        for chunk in self.chunks:
+            if chunk.aabb(npc.x, npc.y):
+                return chunk
+        return None

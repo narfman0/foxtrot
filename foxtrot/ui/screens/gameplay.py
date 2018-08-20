@@ -38,16 +38,13 @@ class GameplayScreen:
                         )
                         for destination in destinations
                     ]
-                    menu = Menu(options)
+                    menu = Menu(options, background_color=1)
                     self.menus.append(menu)
         self.world.update()
 
     def handle_flight(self, origin, destination):
         self.menus.pop()
-        x = destination.x - origin.x + destination.width // 2 + origin.width // 2 + 2
-        y = destination.y - origin.y
-        origin.move(x, y)
-        self.world.player.move(x, y)
+        self.world.fly(origin, destination)
 
     def handle_movement_input(self):
         if pyxel.btn(pyxel.KEY_DOWN):
