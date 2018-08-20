@@ -109,7 +109,14 @@ class GameplayScreen:
         """ Draw a tile given world coordinates x, y """
         render_x = x * TILE_WIDTH + pyxel.width // 2
         render_y = -y * TILE_WIDTH + pyxel.height // 2
-        pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
+        # easy avoiding rendering offscreen. note: we can know this beforehand
+        if (
+            render_x > -TILE_WIDTH
+            and render_x < pyxel.width + TILE_WIDTH
+            and render_y > -TILE_WIDTH
+            and render_y < pyxel.height + TILE_WIDTH
+        ):
+            pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
 
     def chunk_active(self, chunk):
         """ Check if chunk should be active or not """
