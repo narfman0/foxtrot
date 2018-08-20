@@ -76,9 +76,9 @@ class Chunk:
         for room in self.tiles.rooms:
             if (
                 rel_x >= room.x
-                and rel_x <= room.x + room.width
+                and rel_x < room.x + room.width
                 and rel_y >= room.y
-                and rel_y <= room.y + room.height
+                and rel_y < room.y + room.height
             ):
                 return room
         return None
