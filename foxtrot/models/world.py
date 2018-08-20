@@ -71,8 +71,25 @@ class World:
         self.chunks.append(ship)
 
     def fly(self, origin, destination):
-        x = destination.x - origin.x + destination.width // 2 + origin.width // 2 + 2
+        x = destination.x - origin.x
         y = destination.y - origin.y
+        direction = random.randint(0, 3)
+        if direction == 0:
+            # up
+            x += destination.airlock_x - origin.airlock_x
+            y += destination.height // 2 + origin.height // 2
+        elif direction == 1:
+            # right
+            x += destination.width // 2 + origin.width // 2
+            y += destination.airlock_y - origin.airlock_y
+        elif direction == 2:
+            # down
+            x += destination.airlock_x - origin.airlock_x
+            y -= destination.height // 2 + origin.height // 2
+        else:
+            # left
+            x -= destination.width // 2 + origin.width // 2
+            y += destination.airlock_y - origin.airlock_y
         origin.move(x, y)
         self.player.move(x, y)
 

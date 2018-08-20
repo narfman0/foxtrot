@@ -95,3 +95,16 @@ class Chunk:
         for npc in self.npcs:
             npc.x += x
             npc.y += y
+
+    @property
+    def airlock_x(self):
+        """ Return airlocks x coord relative to its center """
+        return self.tiles.airlock_x - self.width // 2
+
+    @property
+    def airlock_y(self):
+        """ Return airlocks y coord relative to its center """
+        return self.tiles.airlock_y - self.height // 2
+
+    def __repr__(self):
+        return self.name + " x,y: %d,%d" % (self.x, self.y)
