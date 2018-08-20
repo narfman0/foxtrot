@@ -1,5 +1,7 @@
 """ World contains multiple chunks, which are populated game sections """
 import logging
+import math
+import operator
 import random
 
 from foxtrot.models.chunk import Planet, Ship, Station
@@ -82,3 +84,12 @@ class World:
             abs(self.player.x - chunk.x) - chunk.width // 2 < max_distance
             and abs(self.player.y - chunk.y) - chunk.height // 2 < max_distance
         )
+
+    def get_destinations(self, x, y, sort=True):
+        destinations = []
+        for chunk in self.chunks:
+            if not isinstance(chunk, Ship):
+                distance = math.sqrt((x - chunk.x) ** 2 + (y - chunk.y) ** 2)
+                destinations.append((distance, chunk))
+        destinations = sorted(destinations, key=operator.itemgetter(0))
+        return [destination[1] for destination in destinations]

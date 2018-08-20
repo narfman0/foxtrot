@@ -15,15 +15,13 @@ class NPC:
         self.in_room = False
 
     def update(self, world):
-        self.x += self.dx
-        self.y += self.dy
+        self.move(self.dx, self.dy)
         self.chunk = world.npc_in_chunk(self)
 
         if self.chunk is not None and not self.in_chunk:
-            # we just entered a chunk, make sure its not on an impassable wall
+            # make sure chunk is not on an impassable wall
             if not self.chunk.passable(self.x, self.y):
-                self.x -= self.dx
-                self.y -= self.dy
+                self.move(-self.dx, -self.dy)
 
         self.in_chunk = bool(self.chunk)
         if self.in_chunk:
@@ -31,3 +29,10 @@ class NPC:
             self.dy = 0
             self.room = self.chunk.get_room(self.x, self.y)
             self.in_room = bool(self.room)
+        else:
+            self.room = None
+            self.in_room = False
+
+    def move(self, x, y):
+        self.x += x
+        self.y += y

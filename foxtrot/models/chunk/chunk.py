@@ -15,6 +15,8 @@ class Chunk:
         random,
         x=None,
         y=None,
+        dx=None,
+        dy=None,
         width=None,
         height=None,
         max_size=10000,
@@ -35,6 +37,8 @@ class Chunk:
             if y is None
             else y
         )
+        self.dx = dx if dx is not None else 0
+        self.dy = dy if dy is not None else 0
         self.name = name if name else words.generate(random)
         self.npcs = []
         self.tiles = generator.Generator(width=self.width, height=self.height)
@@ -47,6 +51,8 @@ class Chunk:
         self.tiles.place_walls()
 
     def update(self):
+        self.x += self.dx
+        self.y += self.dy
         for npc in npcs:
             npc.update()
 
@@ -82,3 +88,10 @@ class Chunk:
             ):
                 return room
         return None
+
+    def move(self, x, y):
+        self.x += x
+        self.y += y
+        for npc in self.npcs:
+            npc.x += x
+            npc.y += y

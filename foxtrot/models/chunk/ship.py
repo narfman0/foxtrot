@@ -1,14 +1,5 @@
-from enum import Enum
-
 from foxtrot.models.chunk.chunk import Chunk
-
-
-class RoomType(Enum):
-    BRIDGE = 1
-    ENGINEERING = 2
-    WEAPONS = 3
-    LIFE = 4
-    CARGO = 5
+from foxtrot.models.chunk.room_type import RoomType
 
 
 class Ship(Chunk):

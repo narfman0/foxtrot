@@ -1,3 +1,3 @@
-from foxtrot.models.chunk import Chunk
+from foxtrot.models.chunk import Chunk, RoomType, Ship
 from foxtrot.models.npc import NPC
 from foxtrot.models.world import World
