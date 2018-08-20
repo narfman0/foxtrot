@@ -15,7 +15,7 @@ def draw_chunk_locations(screen):
     index = 0
     for chunk in screen.world.chunks:
         color = 8
-        if screen.world.chunk_active(chunk):
+        if screen.chunk_active(chunk):
             color = 10
         text = "%s x,y: %d,%d" % (type(chunk).__name__, chunk.x, chunk.y)
         pyxel.text(pyxel.width - len(text) * 4 - 4, 4 + 8 * index, text, color)

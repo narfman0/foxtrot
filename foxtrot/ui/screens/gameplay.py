@@ -83,7 +83,7 @@ class GameplayScreen:
 
     def draw(self):
         for chunk in self.world.chunks:
-            if self.world.chunk_active(chunk):
+            if self.chunk_active(chunk):
                 self.draw_chunk(chunk)
         if DEBUG:
             debug.draw(self)
@@ -110,3 +110,12 @@ class GameplayScreen:
         render_x = x * TILE_WIDTH + pyxel.width // 2
         render_y = -y * TILE_WIDTH + pyxel.height // 2
         pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
+
+    def chunk_active(self, chunk):
+        """ Check if chunk should be active or not """
+        return (
+            abs(self.world.player.x - chunk.x) - chunk.width // 2
+            < pyxel.width // 2 // TILE_WIDTH
+            and abs(self.world.player.y - chunk.y) - chunk.height // 2
+            < pyxel.height // 2 // TILE_WIDTH
+        )

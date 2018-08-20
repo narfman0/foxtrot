@@ -70,14 +70,6 @@ class World:
                 logger.warn("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
 
-    def chunk_active(self, chunk):
-        """ Check if chunk should be active or not """
-        max_distance = 64
-        return (
-            abs(self.player.x - chunk.x) - chunk.width // 2 < max_distance
-            and abs(self.player.y - chunk.y) - chunk.height // 2 < max_distance
-        )
-
     def fly(self, origin, destination):
         x = destination.x - origin.x + destination.width // 2 + origin.width // 2 + 2
         y = destination.y - origin.y
