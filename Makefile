@@ -3,8 +3,7 @@
 clean: clean-build clean-pyc
 
 clean-build:
-	rm -fr build/
-	rm -fr dist/
+	rm -fr build/ dist/ *.log
 	rm -fr *.egg-info *.spec
 
 clean-pyc:

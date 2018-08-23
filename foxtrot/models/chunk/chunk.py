@@ -1,12 +1,11 @@
 """ A chunk is a meaningful part of the world. It includes bounding box of
 coords, tiles, and possibly npcs. """
-import logging
-
+from foxtrot import log
 from foxtrot.models.chunk import generator
 from foxtrot.models import words
 
 
-logger = logging.getLogger(__name__)
+logger = log.create_logger(__name__)
 
 
 class Chunk:
@@ -40,7 +39,7 @@ class Chunk:
         self.dx = dx if dx is not None else 0
         self.dy = dy if dy is not None else 0
         self.name = name if name else words.generate(random)
-        self.npcs = []
+        self.npcs = set()
         self.tiles = generator.Generator(width=self.width, height=self.height)
         self.tiles.place_random_rooms(room_min_size, room_max_size, 2, 1, 200)
         self.tiles.generate_corridors("f")
@@ -50,11 +49,9 @@ class Chunk:
         self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
         self.tiles.place_walls()
 
-    def update(self):
+    def update(self, world):
         self.x += self.dx
         self.y += self.dy
-        for npc in self.npcs:
-            npc.update()
 
     def aabb(self, x, y):
         """ return True if x,y coords are inside this chunk """

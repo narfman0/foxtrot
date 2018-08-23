@@ -41,7 +41,7 @@ class Ship(Chunk):
         for room in range(Ship.MIN_ROOMS):
             self.tiles.rooms[room].type = RoomType(1 + room)
 
-    def update(self):
+    def update(self, world):
         if self.traveling:
             dst_x, dst_y = self.travel_destination
             origin_x, origin_y = self.travel_origin
@@ -59,7 +59,7 @@ class Ship(Chunk):
                 x = origin_x + int(travel_percent * float(dst_x - origin_x))
                 y = origin_y + int(travel_percent * float(dst_y - origin_y))
                 self.move(x - self.x, y - self.y)
-        Chunk.update(self)
+        Chunk.update(self, world)
 
     def travel(self, x, y):
         """ Set up travel to the given RELATIVE x,y coordinates """

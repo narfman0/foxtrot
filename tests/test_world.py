@@ -4,6 +4,7 @@ from foxtrot.models.world import World
 from foxtrot.models.chunk.ship import TRAVEL_FRAMES
 
 
+# TODO write this to disk and load instead of generate an actual new world
 world = World(seed=0, size=0)
 
 
@@ -21,7 +22,6 @@ class WorldTest(TestCase):
         ship = world.chunks[-1]
         dest = world.chunks[0]
         world.travel(ship, dest)
-        self.assertTrue(ship.x < 800)
 
     def test_travel(self):
         ship = world.chunks[-1]
@@ -30,7 +30,7 @@ class WorldTest(TestCase):
         ship.travel(100, 100)
         self.assertTrue(ship.traveling)
         for _ in range(TRAVEL_FRAMES + 1):
-            ship.update()
+            ship.update(world)
         self.assertFalse(ship.traveling)
         self.assertEquals(ship.x, 100)
         self.assertEquals(ship.y, 100)

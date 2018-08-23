@@ -1,14 +1,14 @@
 """ World contains multiple chunks, which are populated game sections """
-import logging
 import math
 import operator
 import random
 
+from foxtrot import log
 from foxtrot.models.chunk import Planet, Ship, Station
 from foxtrot.models.npc import NPC
 
 
-logger = logging.getLogger(__name__)
+logger = log.create_logger(__name__)
 
 
 PLAYER_SPAWN_MAX_DISTANCE = 4
@@ -37,7 +37,7 @@ class World:
         """ Update every tick """
         self.player.update(self)
         for chunk in self.chunks:
-            chunk.update()
+            chunk.update(self)
 
     def create_player(self, chunk):
         x = chunk.x
@@ -58,7 +58,7 @@ class World:
             x += offset
         else:
             y += offset
-        self.player = NPC(x=x, y=y)
+        self.player = NPC(random, x=x, y=y)
 
     def create_ship(self):
         x = self.player.x
@@ -103,7 +103,6 @@ class World:
             x -= destination.width // 2 + origin.width // 2
             y += destination.airlock_y - origin.airlock_y
         origin.travel(x, y)
-        self.player.move(x, y)
 
     def get_destinations(self, x, y, sort=True):
         destinations = []
