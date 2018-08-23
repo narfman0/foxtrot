@@ -23,7 +23,13 @@ class NPC:
     def update(self, world):
         self.move(self.dx, self.dy)
         old_chunk = self.chunk
-        self.chunk = world.npc_in_chunk(self)
+        # npc can overlap many chunks (if traveling in ship, e.g.), so change
+        # only if we aren't in originating chunk
+        chunks = list(world.npc_in_chunk(self))
+        if chunks and self.chunk not in chunks:
+            self.chunk = chunks[0]
+            if len(chunks) > 1:
+                logger.warn("NPC %s in multiple chunks, choosing first", self)
 
         if self.chunk and self.in_chunk != old_chunk:
             # make sure chunk is not on an impassable wall

@@ -115,8 +115,7 @@ class World:
         return [destination[1] for destination in destinations]
 
     def npc_in_chunk(self, npc):
-        """ return chunk if npc is in a chunk """
+        """ return chunks npc is in """
         for chunk in self.chunks:
             if chunk.aabb(npc.x, npc.y):
-                return chunk
-        return None
+                yield chunk

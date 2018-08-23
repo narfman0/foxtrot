@@ -2,7 +2,7 @@ from foxtrot import log, math
 from foxtrot.models.chunk.chunk import Chunk
 from foxtrot.models.chunk.room_type import RoomType
 
-TRAVEL_FRAMES = 120
+TRAVEL_FRAMES = 60
 logger = log.create_logger(__name__)
 
 
