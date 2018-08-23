@@ -1,6 +1,7 @@
 from unittest import mock, TestCase
 
 from foxtrot.models.world import World
+from foxtrot.models.chunk.ship import TRAVEL_FRAMES
 
 
 world = World(seed=0, size=0)
@@ -28,7 +29,7 @@ class WorldTest(TestCase):
         ship.y = 0
         ship.travel(100, 100)
         self.assertTrue(ship.traveling)
-        for _ in range(50):
+        for _ in range(TRAVEL_FRAMES + 1):
             ship.update()
         self.assertFalse(ship.traveling)
         self.assertEquals(ship.x, 100)
