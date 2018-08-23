@@ -4,6 +4,6 @@ from enum import Enum
 class RoomType(Enum):
     BRIDGE = 1
     ENGINEERING = 2
-    WEAPONS = 3
-    LIFE = 4
+    LIFE = 3
+    WEAPONS = 4
     CARGO = 5
