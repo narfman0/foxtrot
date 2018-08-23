@@ -1,5 +1,9 @@
+import math
+
 from foxtrot.models.chunk.chunk import Chunk
 from foxtrot.models.chunk.room_type import RoomType
+
+TRAVEL_FRAMES = 100
 
 
 class Ship(Chunk):
@@ -22,6 +26,7 @@ class Ship(Chunk):
         height = height if height else size[1]
         room_min_size = room_min_size if room_min_size else 4
         room_max_size = room_max_size if room_max_size else 6
+        self.traveling = False
         Chunk.__init__(
             self,
             random,
@@ -35,3 +40,30 @@ class Ship(Chunk):
         )
         for room in range(Ship.MIN_ROOMS):
             self.tiles.rooms[room].type = RoomType(1 + room)
+
+    def update(self):
+        if self.traveling:
+            dst_x, dst_y = self.travel_destination
+            origin_x, origin_y = self.travel_origin
+            if self.travel_frame >= TRAVEL_FRAMES:
+                self.traveling = False
+                self.dx = 0
+                self.dy = 0
+                self.move(dst_x - self.x, dst_y - self.y)
+                self.x = dst_x
+                self.y = dst_y
+            else:
+                self.travel_frame += 1
+                # lerp. should maybe to cubic or something, to ease :)
+                travel_percent = float(self.travel_frame / TRAVEL_FRAMES)
+                x = origin_x + int(travel_percent * float(dst_x - origin_x))
+                y = origin_y + int(travel_percent * float(dst_y - origin_y))
+                self.move(x - self.x, y - self.y)
+        Chunk.update(self)
+
+    def travel(self, x, y):
+        """ Set up travel to the given RELATIVE x,y coordinates """
+        self.traveling = True
+        self.travel_destination = (self.x + x, self.y + y)
+        self.travel_origin = (self.x, self.y)
+        self.travel_frame = 0

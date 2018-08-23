@@ -82,7 +82,7 @@ class World:
                 logger.warn("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
 
-    def fly(self, origin, destination):
+    def travel(self, origin, destination):
         x = destination.x - origin.x
         y = destination.y - origin.y
         direction = random.randint(0, 3)
@@ -102,7 +102,7 @@ class World:
             # left
             x -= destination.width // 2 + origin.width // 2
             y += destination.airlock_y - origin.airlock_y
-        origin.move(x, y)
+        origin.travel(x, y)
         self.player.move(x, y)
 
     def get_destinations(self, x, y, sort=True):

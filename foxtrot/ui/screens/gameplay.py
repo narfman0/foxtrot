@@ -35,7 +35,7 @@ class GameplayScreen:
                     options = [
                         (
                             destination.name,
-                            lambda: self.handle_flight(origin, destination),
+                            lambda: self.handle_travel(origin, destination),
                         )
                         for destination in destinations
                     ]
@@ -43,9 +43,9 @@ class GameplayScreen:
                     self.menus.append(menu)
         self.world.update()
 
-    def handle_flight(self, origin, destination):
+    def handle_travel(self, origin, destination):
         self.menus.pop()
-        self.world.fly(origin, destination)
+        self.world.travel(origin, destination)
 
     def handle_movement_input(self):
         if pyxel.btn(pyxel.KEY_DOWN):

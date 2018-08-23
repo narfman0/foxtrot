@@ -19,5 +19,17 @@ class WorldTest(TestCase):
         random.randint.return_value = 0
         ship = world.chunks[-1]
         dest = world.chunks[0]
-        world.fly(ship, dest)
+        world.travel(ship, dest)
         self.assertTrue(ship.x < 800)
+
+    def test_travel(self):
+        ship = world.chunks[-1]
+        ship.x = 0
+        ship.y = 0
+        ship.travel(100, 100)
+        self.assertTrue(ship.traveling)
+        for _ in range(50):
+            ship.update()
+        self.assertFalse(ship.traveling)
+        self.assertEquals(ship.x, 100)
+        self.assertEquals(ship.y, 100)

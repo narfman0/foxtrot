@@ -53,7 +53,7 @@ class Chunk:
     def update(self):
         self.x += self.dx
         self.y += self.dy
-        for npc in npcs:
+        for npc in self.npcs:
             npc.update()
 
     def aabb(self, x, y):
@@ -90,11 +90,11 @@ class Chunk:
         return None
 
     def move(self, x, y):
+        """ Directly move by the given x,y """
         self.x += x
         self.y += y
         for npc in self.npcs:
-            npc.x += x
-            npc.y += y
+            npc.move(x, y)
 
     @property
     def airlock_x(self):
