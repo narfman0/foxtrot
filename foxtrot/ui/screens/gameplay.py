@@ -1,3 +1,5 @@
+import functools
+
 import pyxel
 
 from foxtrot import log
@@ -35,10 +37,9 @@ class GameplayScreen:
                     origin = self.world.player.chunk
                     options = []
                     for destination in destinations:
-
-                        def handler():
-                            self.handle_travel(origin, destination)
-
+                        handler = functools.partial(
+                            self.handle_travel, origin, destination
+                        )
                         options.append((destination.name, handler))
                     menu = Menu(options, background_color=1)
                     self.menus.append(menu)
