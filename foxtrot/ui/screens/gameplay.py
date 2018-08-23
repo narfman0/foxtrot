@@ -30,9 +30,8 @@ class GameplayScreen:
             if self.world.player.in_room and type(self.world.player.chunk) is Ship:
                 room_type = getattr(self.world.player.room, "type", None)
                 if room_type is RoomType.BRIDGE:
-                    destinations = self.world.get_destinations(
-                        self.world.player.x, self.world.player.y
-                    )
+                    x, y = self.world.player.position
+                    destinations = self.world.get_destinations(x, y)
                     origin = self.world.player.chunk
                     options = []
                     for destination in destinations:

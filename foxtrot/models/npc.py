@@ -55,5 +55,9 @@ class NPC:
         self.x += x
         self.y += y
 
+    @property
+    def position(self):
+        return self.x, self.y
+
     def __repr__(self):
         return self.name
