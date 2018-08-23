@@ -1,9 +1,9 @@
-import math
-
+from foxtrot import log, math
 from foxtrot.models.chunk.chunk import Chunk
 from foxtrot.models.chunk.room_type import RoomType
 
 TRAVEL_FRAMES = 100
+logger = log.create_logger(__name__)
 
 
 class Ship(Chunk):
@@ -44,7 +44,6 @@ class Ship(Chunk):
     def update(self, world):
         if self.traveling:
             dst_x, dst_y = self.travel_destination
-            origin_x, origin_y = self.travel_origin
             if self.travel_frame >= TRAVEL_FRAMES:
                 self.traveling = False
                 self.dx = 0
@@ -52,12 +51,13 @@ class Ship(Chunk):
                 self.move(dst_x - self.x, dst_y - self.y)
                 self.x = dst_x
                 self.y = dst_y
+                logger.info("%s completed trip to %s", self, self.travel_destination)
             else:
                 self.travel_frame += 1
-                # lerp. should maybe to cubic or something, to ease :)
-                travel_percent = float(self.travel_frame / TRAVEL_FRAMES)
-                x = origin_x + int(travel_percent * float(dst_x - origin_x))
-                y = origin_y + int(travel_percent * float(dst_y - origin_y))
+                percent = float(self.travel_frame / TRAVEL_FRAMES)
+                # TODO progress = math.smoothstep(percent)
+                progress = percent
+                x, y = math.lerp(self.travel_origin, self.travel_destination, progress)
                 self.move(x - self.x, y - self.y)
         Chunk.update(self, world)
 

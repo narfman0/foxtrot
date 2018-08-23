@@ -83,6 +83,7 @@ class World:
         self.chunks.append(ship)
 
     def travel(self, origin, destination):
+        logger.info("%s traveling to %s", origin, destination)
         x = destination.x - origin.x
         y = destination.y - origin.y
         direction = random.randint(0, 3)

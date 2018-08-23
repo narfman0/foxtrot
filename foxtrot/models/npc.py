@@ -31,11 +31,15 @@ class NPC:
                 self.move(-self.dx, -self.dy)
                 self.chunk = old_chunk
             if self.chunk != old_chunk:
-                logger.info("Adding npc %s to chunk %s", self, self.chunk)
+                logger.info(
+                    "Adding npc %s to %s %s", self, type(old_chunk).__name__, self.chunk
+                )
                 self.chunk.npcs.add(self)
         if old_chunk is not None and self.chunk != old_chunk:
             old_chunk.npcs.remove(self)
-            logger.info("Removing npc %s from chunk %s", self, old_chunk)
+            logger.info(
+                "Removing npc %s from %s %s", self, type(old_chunk).__name__, old_chunk
+            )
 
         self.in_chunk = bool(self.chunk)
         if self.in_chunk:

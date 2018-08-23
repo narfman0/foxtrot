@@ -2,6 +2,10 @@ import logging
 
 
 def create_logger(name):
+    return logging.getLogger(name)
+
+
+def init():
     logging.basicConfig(
         level=logging.DEBUG,
         format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
@@ -13,6 +17,7 @@ def create_logger(name):
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
     console.setFormatter(formatter)
-    logger = logging.getLogger(name)
-    logger.addHandler(console)
-    return logger
+    logging.getLogger("").addHandler(console)
+
+
+init()

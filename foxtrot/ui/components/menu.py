@@ -1,5 +1,9 @@
 import pyxel
 
+from foxtrot import log
+
+logger = log.create_logger(__name__)
+
 
 class Menu:
     border_width = 4
@@ -13,10 +17,13 @@ class Menu:
         self.width = (
             max([len(option[0]) for option in self.options]) * 4 + self.border_width
         )
+        logger.debug("Created menu with options: %s", options)
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_ENTER):
-            self.options[self.current_option][1]()
+            selection = self.options[self.current_option]
+            logger.debug("Menu selected option: %s", selection)
+            selection[1]()
         if pyxel.btnp(pyxel.KEY_DOWN):
             if self.current_option == len(self.options) - 1:
                 self.current_option = 0

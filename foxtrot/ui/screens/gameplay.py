@@ -1,5 +1,6 @@
 import pyxel
 
+from foxtrot import log
 from foxtrot.models import NPC, RoomType, Ship, World
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu
@@ -7,6 +8,7 @@ from foxtrot.ui.components.menu import Menu
 
 TILE_WIDTH = 8
 DEBUG = True
+logger = log.create_logger(__name__)
 
 
 class GameplayScreen:
@@ -32,13 +34,13 @@ class GameplayScreen:
                         self.world.player.x, self.world.player.y
                     )
                     origin = self.world.player.chunk
-                    options = [
-                        (
-                            destination.name,
-                            lambda: self.handle_travel(origin, destination),
-                        )
-                        for destination in destinations
-                    ]
+                    options = []
+                    for destination in destinations:
+
+                        def handler():
+                            self.handle_travel(origin, destination)
+
+                        options.append((destination.name, handler))
                     menu = Menu(options, background_color=1)
                     self.menus.append(menu)
         self.world.update()
