@@ -30,11 +30,15 @@ class NPC:
             self.chunk = chunks[0]
             if len(chunks) > 1:
                 logger.warn("NPC %s in multiple chunks, choosing first", self)
+        if not chunks:
+            self.chunk = None
 
         if self.chunk and self.in_chunk != old_chunk:
             # make sure chunk is not on an impassable wall
             if not self.chunk.passable(self.x, self.y):
                 self.move(-self.dx, -self.dy)
+                self.dx = 0
+                self.dy = 0
                 self.chunk = old_chunk
             if self.chunk != old_chunk:
                 logger.info(
