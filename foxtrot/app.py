@@ -12,8 +12,6 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        if pyxel.btnp(pyxel.KEY_Q):
-            pyxel.quit()
         self.screens[-1].update()
 
     def draw(self):

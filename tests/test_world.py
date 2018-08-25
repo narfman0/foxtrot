@@ -16,9 +16,9 @@ class WorldTest(TestCase):
         destinations = world.get_destinations(2, 2)
         self.assertEquals(4, len(destinations))
 
-    @mock.patch("foxtrot.models.world.random")
-    def test_fly(self, random):
-        random.randint.return_value = 0
+    @mock.patch("foxtrot.models.world.random.randint")
+    def test_fly(self, randint):
+        randint.return_value = 0
         ship = world.chunks[-1]
         dest = world.chunks[0]
         world.travel(ship, dest)

@@ -3,7 +3,7 @@ import functools
 import pyxel
 
 from foxtrot import log
-from foxtrot.models import NPC, RoomType, Ship, World
+from foxtrot.models import saves, NPC, RoomType, Ship, World
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu
 
@@ -14,13 +14,23 @@ logger = log.create_logger(__name__)
 
 
 class GameplayScreen:
-    def __init__(self, screen_manager):
+    def __init__(self, screen_manager, world=None):
         self.screen_manager = screen_manager
         self.menus = []
         distance_hint = pyxel.width // 2 // TILE_WIDTH
-        self.world = World(tile_width=TILE_WIDTH, distance_hint=distance_hint)
+        if world:
+            self.world = world
+        else:
+            self.world = World(tile_width=TILE_WIDTH, distance_hint=distance_hint)
 
     def update(self):
+        if pyxel.btnp(pyxel.KEY_Q):
+            options = [
+                ("Save Game", self.handle_save),
+                ("Skip Save", self.screen_manager.pop),
+            ]
+            menu = Menu(options, background_color=1)
+            self.menus.append(menu)
         if pyxel.btnp(pyxel.KEY_BACKSPACE):
             self.screen_manager.pop()
         if self.menus:
@@ -44,6 +54,10 @@ class GameplayScreen:
                     menu = Menu(options, background_color=1)
                     self.menus.append(menu)
         self.world.update()
+
+    def handle_save(self):
+        saves.save(self.world)
+        self.screen_manager.pop()
 
     def handle_travel(self, origin, destination):
         self.menus.pop()

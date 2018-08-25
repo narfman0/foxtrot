@@ -2,6 +2,7 @@ import pyxel
 
 from foxtrot.ui.components.menu import Menu
 from foxtrot.ui.screens.gameplay import GameplayScreen
+from foxtrot.ui.screens.load import LoadScreen
 
 
 TITLE = "Foxtrot"
@@ -11,10 +12,16 @@ class MenuScreen:
     def __init__(self, screen_manager):
         self.screen_manager = screen_manager
         self.menu = Menu(
-            [("Start Game", self.start_game), ("Quit", lambda: pyxel.quit())]
+            [
+                ("Start Game", self.start_game),
+                ("Load Game", self.load_game),
+                ("Quit", lambda: pyxel.quit()),
+            ]
         )
 
     def update(self):
+        if pyxel.btnp(pyxel.KEY_Q):
+            pyxel.quit()
         self.menu.update()
 
     def draw(self):
@@ -22,6 +29,9 @@ class MenuScreen:
         pyxel.text(
             pyxel.width / 2 - len(TITLE) * 4 / 2, 64, TITLE, pyxel.frame_count % 16
         )
+
+    def load_game(self):
+        self.screen_manager.push(LoadScreen(self.screen_manager))
 
     def start_game(self):
         self.screen_manager.push(GameplayScreen(self.screen_manager))
