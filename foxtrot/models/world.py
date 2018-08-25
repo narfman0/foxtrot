@@ -15,7 +15,10 @@ PLAYER_SPAWN_MAX_DISTANCE = 4
 
 
 class World:
-    def __init__(self, seed=None, size=0, tile_width=8, distance_hint=8):
+    def __init__(self):
+        self.chunks = []
+
+    def create(self, seed=None, size=0, tile_width=8, distance_hint=8):
         """ Create world with given seed, will generate using system timestamp
         if none given. Size expected in the range (0-10)
         :param int distance_hint: rough number of tiles away player should spawn
@@ -25,13 +28,13 @@ class World:
         self.distance_hint = distance_hint
         planet_count = random.randint(2 + size // 2, 3 + size // 2)
         station_count = random.randint(2 * size - 2, 2 * size + 2)
-        self.chunks = []
         for _ in range(planet_count):
             self.chunks.append(Planet(random))
         for _ in range(station_count):
             self.chunks.append(Station(random))
         self.create_player(self.chunks[0])
         self.create_ship()
+        return self
 
     def update(self):
         """ Update every tick """
@@ -58,7 +61,7 @@ class World:
             x += offset
         else:
             y += offset
-        self.player = NPC(random, x=x, y=y)
+        self.player = NPC(random=random, x=x, y=y)
 
     def create_ship(self):
         x = self.player.x

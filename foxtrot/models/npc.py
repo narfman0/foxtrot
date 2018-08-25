@@ -8,7 +8,7 @@ class NPC:
     EVA_ACCELERATION = .002
     VELOCITY_IN_GRAVITY = .1
 
-    def __init__(self, random, name=None, x=0, y=0, dx=0, dy=0):
+    def __init__(self, random=None, name=None, x=0, y=0, dx=0, dy=0):
         self.name = name if name else words.generate(random)
         self.x = x
         self.y = y
