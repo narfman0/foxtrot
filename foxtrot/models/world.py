@@ -18,7 +18,7 @@ class World:
     def __init__(self):
         self.chunks = []
 
-    def create(self, seed=None, size=0, tile_width=8, distance_hint=8):
+    def create(self, seed=None, size=5, tile_width=8, distance_hint=8):
         """ Create world with given seed, will generate using system timestamp
         if none given. Size expected in the range (0-10)
         :param int distance_hint: rough number of tiles away player should spawn
