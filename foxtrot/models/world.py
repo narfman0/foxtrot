@@ -4,6 +4,7 @@ import operator
 import random
 
 from foxtrot import log
+from foxtrot.models.missions.generate import create_missions
 from foxtrot.models.chunk import Planet, Ship, Station
 from foxtrot.models.npc import NPC
 
@@ -18,7 +19,7 @@ class World:
     def __init__(self):
         self.chunks = []
 
-    def create(self, seed=None, size=5, tile_width=8, distance_hint=8):
+    def create(self, seed=None, size=0, tile_width=8, distance_hint=8):
         """ Create world with given seed, will generate using system timestamp
         if none given. Size expected in the range (0-10)
         :param int distance_hint: rough number of tiles away player should spawn
@@ -34,6 +35,7 @@ class World:
             self.chunks.append(Station(random))
         self.create_player(self.chunks[0])
         self.create_ship()
+        self.missions = create_missions(random, self)
         return self
 
     def update(self):
@@ -41,6 +43,12 @@ class World:
         self.player.update(self)
         for chunk in self.chunks:
             chunk.update(self)
+        if self.missions:
+            active_mission = self.missions[0]
+            active_mission.trigger.update(self)
+            if active_mission.trigger.should_trigger(self):
+                active_mission.manifestation.manifest(self)
+                del self.missions[0]
 
     def create_player(self, chunk):
         x = chunk.x
