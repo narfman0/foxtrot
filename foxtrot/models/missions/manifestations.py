@@ -23,4 +23,4 @@ class LogManifestation(Manifestation):
         self.message = message
 
     def manifest(self, world):
-        logger.warn(self.message)
+        logger.warning(self.message)

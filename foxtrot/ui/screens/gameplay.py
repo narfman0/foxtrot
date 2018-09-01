@@ -70,7 +70,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x, self.world.player.y - NPC.VELOCITY_IN_GRAVITY
-                ):
+                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.y -= NPC.VELOCITY_IN_GRAVITY
 
             else:
@@ -79,7 +79,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x, self.world.player.y + NPC.VELOCITY_IN_GRAVITY
-                ):
+                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.y += NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dy += NPC.EVA_ACCELERATION
@@ -87,7 +87,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x - NPC.VELOCITY_IN_GRAVITY, self.world.player.y
-                ):
+                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.x -= NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dx -= NPC.EVA_ACCELERATION
@@ -95,7 +95,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x + NPC.VELOCITY_IN_GRAVITY, self.world.player.y
-                ):
+                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.x += NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dx += NPC.EVA_ACCELERATION
@@ -110,7 +110,12 @@ class GameplayScreen:
         if self.world.player.in_chunk:
             text = self.world.player.chunk.name
             if self.world.player.in_room and hasattr(self.world.player.room, "type"):
-                text += ", " + self.world.player.room.type.name
+                room_type = self.world.player.room.type
+                text += ", " + (
+                    self.world.company_name
+                    if room_type == RoomType.CORPORATION
+                    else room_type.name
+                )
             pyxel.text(pyxel.width / 2 - len(text) * 2, 4, text, 12)
         for menu in self.menus:
             menu.draw()

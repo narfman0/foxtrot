@@ -7,4 +7,5 @@ def create_missions(random, world):
     # multiples active at once..? sorted at least?
     missions = []
     missions.append(mission.FirstMission())
+    missions.append(mission.InitialDebriefMission(random, world))
     return missions

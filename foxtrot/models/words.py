@@ -3,6 +3,10 @@ import string
 vowels = list("aeiou")
 
 
+def generate_company_name(random):
+    return random.choice(["HaulCorp", "Cargo Kings LLC", "Burden Bandits"])
+
+
 def generate(random):
     return gen_word(random, 2, 4)
 

@@ -29,7 +29,7 @@ class NPC:
         if chunks and self.chunk not in chunks:
             self.chunk = chunks[0]
             if len(chunks) > 1:
-                logger.warn("NPC %s in multiple chunks, choosing first", self)
+                logger.warning("NPC %s in multiple chunks, choosing first", self)
         if not chunks:
             self.chunk = None
 

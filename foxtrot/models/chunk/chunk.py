@@ -69,7 +69,7 @@ class Chunk:
                 or tile == generator.DOOR
             )
         except IndexError as e:
-            logger.warn("Exception determining chunk passability: %s", e)
+            logger.warning("Exception determining chunk passability: %s", e)
             return True
 
     def get_room(self, x, y):

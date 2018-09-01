@@ -4,6 +4,7 @@ import operator
 import random
 
 from foxtrot import log
+from foxtrot.models import words
 from foxtrot.models.missions.generate import create_missions
 from foxtrot.models.chunk import Planet, Ship, Station
 from foxtrot.models.npc import NPC
@@ -33,8 +34,10 @@ class World:
             self.chunks.append(Planet(random))
         for _ in range(station_count):
             self.chunks.append(Station(random))
-        self.create_player(self.chunks[0])
+        self.home_chunk = self.chunks[0]
+        self.create_player(self.home_chunk)
         self.create_ship()
+        self.company_name = words.generate_company_name(random)
         self.missions = create_missions(random, self)
         return self
 
@@ -90,7 +93,7 @@ class World:
                 if len(ship.tiles.rooms) < Ship.MIN_ROOMS:
                     ship = None
             except Exception as e:
-                logger.warn("Failed to create ship with exception: %s, retrying", e)
+                logger.warning("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
 
     def travel(self, origin, destination):

@@ -7,3 +7,5 @@ class RoomType(Enum):
     LIFE = 3
     WEAPONS = 4
     CARGO = 5
+    CORPORATION = 6
+    CREW = 7
