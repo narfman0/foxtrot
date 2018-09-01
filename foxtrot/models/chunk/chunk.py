@@ -86,6 +86,11 @@ class Chunk:
                 return room
         return None
 
+    def get_room_position(self, room):
+        x = self.x - self.width // 2 + room.x + room.width // 2
+        y = self.y - self.height // 2 + room.y + room.height // 2
+        return x, y
+
     def move(self, x, y):
         """ Directly move by the given x,y """
         self.x += x
@@ -103,5 +108,9 @@ class Chunk:
         """ Return airlocks y coord relative to its center """
         return self.tiles.airlock_y - self.height // 2
 
+    @property
+    def position(self):
+        return self.x, self.y
+
     def __repr__(self):
-        return self.name + " x,y: %d,%d" % (self.x, self.y)
+        return self.name + " x,y: %d,%d" % self.position

@@ -4,6 +4,7 @@ import pyxel
 
 from foxtrot import log
 from foxtrot.models import saves, NPC, RoomType, Ship, World
+from foxtrot.models.missions import triggers
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu
 
@@ -40,6 +41,16 @@ class GameplayScreen:
             menu.update()
         else:
             self.handle_movement_input()
+        if pyxel.btnp(pyxel.KEY_M) and pyxel.btn(pyxel.KEY_LEFT_SHIFT):
+            if isinstance(self.world.missions[0].trigger, triggers.RoomTrigger):
+                for chunk in self.world.chunks:
+                    for room in chunk.tiles.rooms:
+                        if room == self.world.missions[0].trigger.room:
+                            room_x, room_y = chunk.get_room_position(room)
+                            self.world.player.x = room_x
+                            self.world.player.y = room_y
+            self.world.missions[0].trigger = triggers.BooleanTrigger()
+            logger.info("Current missiong trigger swapped to activate next check")
         if pyxel.btnp(pyxel.KEY_E):
             if self.world.player.in_room and type(self.world.player.chunk) is Ship:
                 room_type = getattr(self.world.player.room, "type", None)

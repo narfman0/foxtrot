@@ -14,6 +14,14 @@ class Trigger(ABC):
         pass
 
 
+class BooleanTrigger(Trigger):
+    def __init__(self, trigger=True):
+        self.trigger = trigger
+
+    def should_trigger(self, world):
+        return self.trigger
+
+
 class FrameTrigger(Trigger):
     def __init__(self, frames):
         self.frames = frames
