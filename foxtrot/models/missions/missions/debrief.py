@@ -1,23 +1,12 @@
-from abc import ABC
-
 from foxtrot import log
 from foxtrot.models.chunk import RoomType
+from foxtrot.models.missions.missions.mission import Mission
 from foxtrot.models.missions import manifestations, triggers
-
 
 logger = log.create_logger(__name__)
 
 
-class Mission(ABC):
-    pass
-
-
-class FirstMission(Mission):
-    trigger = triggers.FrameTrigger(3 * 60)
-    manifestation = manifestations.LogManifestation("First trigger hit")
-
-
-class InitialDebriefMission(Mission):
+class DebriefMission(Mission):
     manifestation = manifestations.LogManifestation("Initial Debrief trigger hit")
 
     def __init__(self, random, world):

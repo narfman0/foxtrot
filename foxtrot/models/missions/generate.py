@@ -1,4 +1,4 @@
-from foxtrot.models.missions import mission
+from foxtrot.models.missions.missions import AwakeMission, DebriefMission
 
 
 def create_missions(random, world):
@@ -6,6 +6,6 @@ def create_missions(random, world):
     # TODO we might want to make this a graph or something... we might want
     # multiples active at once..? sorted at least?
     missions = []
-    missions.append(mission.FirstMission())
-    missions.append(mission.InitialDebriefMission(random, world))
+    missions.append(AwakeMission())
+    missions.append(DebriefMission(random, world))
     return missions
