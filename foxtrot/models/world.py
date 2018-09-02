@@ -36,6 +36,7 @@ class World:
             self.chunks.append(Station(random))
         self.home_chunk = self.chunks[0]
         self.create_player(self.home_chunk)
+        # TODO keep track of ships better / ownership
         self.create_ship()
         self.company_name = words.generate_company_name(random)
         self.missions = create_missions(random, self)
@@ -95,6 +96,7 @@ class World:
             except Exception as e:
                 logger.warning("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
+        return ship
 
     def travel(self, origin, destination):
         logger.info("%s traveling to %s", origin, destination)

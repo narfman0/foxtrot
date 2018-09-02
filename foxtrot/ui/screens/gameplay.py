@@ -41,7 +41,7 @@ class GameplayScreen:
             menu.update()
         else:
             self.handle_movement_input()
-        if pyxel.btnp(pyxel.KEY_M) and pyxel.btn(pyxel.KEY_LEFT_SHIFT):
+        if DEBUG and pyxel.btnp(pyxel.KEY_M) and pyxel.btn(pyxel.KEY_LEFT_SHIFT):
             if isinstance(self.world.missions[0].trigger, triggers.RoomTrigger):
                 for chunk in self.world.chunks:
                     for room in chunk.tiles.rooms:
@@ -50,7 +50,7 @@ class GameplayScreen:
                             self.world.player.x = room_x
                             self.world.player.y = room_y
             self.world.missions[0].trigger = triggers.BooleanTrigger()
-            logger.info("Current missiong trigger swapped to activate next check")
+            logger.info("Current mission trigger swapped to activate next check")
         if pyxel.btnp(pyxel.KEY_E):
             if self.world.player.in_room and type(self.world.player.chunk) is Ship:
                 room_type = getattr(self.world.player.room, "type", None)
