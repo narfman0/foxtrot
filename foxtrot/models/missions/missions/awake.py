@@ -3,16 +3,10 @@ from foxtrot.models.missions.missions.mission import Mission
 
 
 class AwakeMission(Mission):
-    trigger = triggers.FrameTrigger(7 * 60)
+    trigger = triggers.FrameTrigger(3 * 60)
 
     def __init__(self, random, world):
-        text = "Cap! Head to the closest %s office, stat." % world.company_name
-        options = [
-            ("Affirmative", self.complete),
-            ("Time to hit the ol' dusty trail", self.complete),
-        ]
+        text = "Cap! You ok? Head to your ship - should be nearby."
+        options = ["Affirmative", "Time to hit the ol' dusty trail"]
         callback = lambda *args: world.create_menu(text, options)
         self.manifestation = manifestations.MenuManifestation(callback, text, options)
-
-    def complete(self):
-        pass

@@ -27,11 +27,12 @@ class Menu:
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_ENTER):
-            selection = self.options[self.current_option]
-            logger.debug("Menu selected option: %s", selection)
+            text, handler = self.get_option(self.options[self.current_option])
+            logger.debug("Menu selected option: %s", text)
             if self.listener:
-                self.listener.handle_selection(selection)
-            selection[1]()
+                self.listener.handle_selection(self.current_option)
+            if handler:
+                handler()
         if pyxel.btnp(pyxel.KEY_DOWN):
             if self.current_option == len(self.options) - 1:
                 self.current_option = 0
@@ -54,7 +55,7 @@ class Menu:
             y = pyxel.height / 2 - self.height // 2 + self.border_width // 2
             pyxel.text(x, y, self.text, self.text_color)
             index += 1
-        for text, _handler in self.options:
+        for text, handler in self.get_options():
             color = (
                 self.text_color_selected
                 if index - (1 if self.text else 0) == self.current_option
@@ -69,3 +70,13 @@ class Menu:
             )
             pyxel.text(x, y, text, color)
             index += 1
+
+    def get_options(self):
+        for option in self.options:
+            yield self.get_option(option)
+
+    def get_option(self, option):
+        if isinstance(option, str):
+            return (option, None)
+        else:
+            return option

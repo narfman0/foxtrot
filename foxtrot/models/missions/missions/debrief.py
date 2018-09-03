@@ -7,9 +7,17 @@ logger = log.create_logger(__name__)
 
 
 class DebriefMission(Mission):
-    manifestation = manifestations.LogManifestation("Initial Debrief trigger hit")
-
     def __init__(self, random, world):
+        self.create_manifestation(random, world)
+        self.create_trigger(random, world)
+
+    def create_manifestation(self, random, world):
+        text = "Youve cost us much. Last chance - start a colony or else"
+        options = ["Affirmative", "Can do, sir"]
+        callback = lambda *args: world.create_menu(text, options)
+        self.manifestation = manifestations.MenuManifestation(callback, text, options)
+
+    def create_trigger(self, random, world):
         rooms = world.home_chunk.tiles.rooms
         room = None
         tries = 4 * len(rooms)
@@ -26,5 +34,3 @@ class DebriefMission(Mission):
             else:
                 tries += 1
         self.trigger = triggers.RoomTrigger(room)
-        # TODO trigger menu instead of log :)
-        # self.manifestation = manifestations.MenuManifestation(callback, options)
