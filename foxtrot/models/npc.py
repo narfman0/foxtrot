@@ -42,7 +42,10 @@ class NPC:
                 self.chunk = old_chunk
             if self.chunk != old_chunk:
                 logger.info(
-                    "Adding npc %s to %s %s", self, type(old_chunk).__name__, self.chunk
+                    "Adding npc %s to %s %s",
+                    self,
+                    type(self.chunk).__name__,
+                    self.chunk,
                 )
                 self.chunk.npcs.add(self)
         if old_chunk is not None and self.chunk != old_chunk:

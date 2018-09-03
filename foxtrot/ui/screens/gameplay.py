@@ -23,16 +23,21 @@ class GameplayScreen:
             self.world = world
         else:
             self.world = World().create(
-                tile_width=TILE_WIDTH, distance_hint=distance_hint
+                listener=self, tile_width=TILE_WIDTH, distance_hint=distance_hint
             )
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):
             options = [
-                ("Save Game", self.handle_save),
-                ("Skip Save", self.screen_manager.pop),
+                ("Yes", self.handle_save),
+                ("No", self.screen_manager.pop),
+                ("Cancel", self.menus.pop),
             ]
-            menu = Menu(options, background_color=1)
+            menu = Menu(
+                text="Save game as %s?" % self.world.player.name,
+                options=options,
+                background_color=1,
+            )
             self.menus.append(menu)
         if pyxel.btnp(pyxel.KEY_BACKSPACE):
             self.screen_manager.pop()
@@ -64,7 +69,7 @@ class GameplayScreen:
                             self.handle_travel, origin, destination
                         )
                         options.append((destination.name, handler))
-                    menu = Menu(options, background_color=1)
+                    menu = Menu(text="Travel to:", options=options, background_color=1)
                     self.menus.append(menu)
         self.world.update()
 
@@ -161,3 +166,12 @@ class GameplayScreen:
             and abs(self.world.player.y - chunk.y) - chunk.height // 2
             < pyxel.height // 2 // TILE_WIDTH
         )
+
+    def create_menu(self, text, options):
+        menu = Menu(listener=self, text=text, options=options, background_color=1)
+        self.menus.append(menu)
+
+    def handle_selection(self, selection):
+        """ Handle menu selection. selection is the index of menu item
+        selected. """
+        self.menus.pop()

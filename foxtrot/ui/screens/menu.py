@@ -12,7 +12,7 @@ class MenuScreen:
     def __init__(self, screen_manager):
         self.screen_manager = screen_manager
         self.menu = Menu(
-            [
+            options=[
                 ("New Game", self.start_game),
                 ("Load Game", self.load_game),
                 ("Quit", lambda: pyxel.quit()),

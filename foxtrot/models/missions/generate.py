@@ -6,7 +6,7 @@ def create_missions(random, world):
     # TODO we might want to make this a graph or something... we might want
     # multiples active at once..? sorted at least?
     return [
-        missions.AwakeMission(),
+        missions.AwakeMission(random, world),
         missions.BoardCraftMission(random, world),
         missions.DebriefMission(random, world),
     ]

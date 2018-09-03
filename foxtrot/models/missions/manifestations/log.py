@@ -9,4 +9,4 @@ class LogManifestation(Manifestation):
         self.message = message
 
     def manifest(self, world):
-        logger.warning(self.message)
+        logger.info(self.message)

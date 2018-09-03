@@ -15,7 +15,7 @@ class LoadScreen:
             handler = functools.partial(self.handle_selection, name)
             options.append((name, handler))
         options.append(("Back", lambda: self.screen_manager.pop()))
-        self.menu = Menu(options)
+        self.menu = Menu(text="Load Game", options=options)
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):
