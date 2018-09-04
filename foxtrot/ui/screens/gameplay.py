@@ -10,7 +10,6 @@ from foxtrot.ui.components.menu import Menu
 
 
 TILE_WIDTH = 8
-DEBUG = True
 logger = log.create_logger(__name__)
 
 
@@ -18,6 +17,7 @@ class GameplayScreen:
     def __init__(self, screen_manager, world=None):
         self.screen_manager = screen_manager
         self.menus = []
+        self.debug = False
         distance_hint = pyxel.width // 2 // TILE_WIDTH
         if world:
             self.world = world
@@ -47,7 +47,7 @@ class GameplayScreen:
             menu.update()
         else:
             self.handle_movement_input()
-        if DEBUG and pyxel.btnp(pyxel.KEY_M) and pyxel.btn(pyxel.KEY_LEFT_SHIFT):
+        if self.debug and pyxel.btnp(pyxel.KEY_M) and pyxel.btn(pyxel.KEY_LEFT_SHIFT):
             if isinstance(self.world.missions[0].trigger, triggers.RoomTrigger):
                 for chunk in self.world.chunks:
                     for room in chunk.tiles.rooms:
@@ -72,6 +72,8 @@ class GameplayScreen:
                         options.append((destination.name, handler))
                     menu = Menu(text="Travel to:", options=options, background_color=1)
                     self.menus.append(menu)
+        if pyxel.btnp(pyxel.KEY_F2):
+            self.debug = not self.debug
         self.world.update()
 
     def handle_save(self):
@@ -87,7 +89,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x, self.world.player.y - NPC.VELOCITY_IN_GRAVITY
-                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
+                ) or (self.debug and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.y -= NPC.VELOCITY_IN_GRAVITY
 
             else:
@@ -96,7 +98,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x, self.world.player.y + NPC.VELOCITY_IN_GRAVITY
-                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
+                ) or (self.debug and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.y += NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dy += NPC.EVA_ACCELERATION
@@ -104,7 +106,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x - NPC.VELOCITY_IN_GRAVITY, self.world.player.y
-                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
+                ) or (self.debug and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.x -= NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dx -= NPC.EVA_ACCELERATION
@@ -112,7 +114,7 @@ class GameplayScreen:
             if self.world.player.in_chunk:
                 if self.world.player.chunk.passable(
                     self.world.player.x + NPC.VELOCITY_IN_GRAVITY, self.world.player.y
-                ) or (DEBUG and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
+                ) or (self.debug and pyxel.btn(pyxel.KEY_LEFT_SHIFT)):
                     self.world.player.x += NPC.VELOCITY_IN_GRAVITY
             else:
                 self.world.player.dx += NPC.EVA_ACCELERATION
@@ -121,7 +123,7 @@ class GameplayScreen:
         for chunk in self.world.chunks:
             if self.chunk_active(chunk):
                 self.draw_chunk(chunk)
-        if DEBUG:
+        if self.debug:
             debug.draw(self)
         self.draw_player()
         if self.world.player.in_chunk:

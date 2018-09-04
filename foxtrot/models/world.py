@@ -83,7 +83,7 @@ class World:
     def create_ship(self):
         x = self.player.x
         y = self.player.y
-        offset = random.randint(20, 24)
+        offset = random.randint(18, 22)
         if random.choice([True, False]):
             offset *= -1
         if random.choice([True, False]):
