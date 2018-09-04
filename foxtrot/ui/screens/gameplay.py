@@ -2,8 +2,8 @@ import functools
 
 import pyxel
 
-from foxtrot import log
-from foxtrot.models import saves, NPC, RoomType, Ship, World
+from foxtrot import log, saves
+from foxtrot.models import NPC, RoomType, Ship, World
 from foxtrot.models.missions import triggers
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu

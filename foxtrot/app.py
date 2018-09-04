@@ -1,14 +1,22 @@
 import pyxel
 
+from foxtrot import saves, settings
 from foxtrot.ui.screens.menu import MenuScreen
 
 
 class App:
     def __init__(self):
-        self.screens = [MenuScreen(self)]
         pyxel.constants.APP_MAX_WINDOW_SIZE = 3840
+        pyxel.constants.APP_MAX_SCREEN_SIZE = 3840
         pyxel.constants.DRAW_MAX_COUNT = 2 ** 16
-        pyxel.init(256, 256, caption="foxtrot")
+        saves.load_settings()
+        self.screens = [MenuScreen(self)]
+        pyxel.init(
+            settings.settings['screen_width'],
+            settings.settings['screen_height'],
+            caption="foxtrot",
+            scale=settings.settings['scale'],
+        )
         pyxel.run(self.update, self.draw)
 
     def update(self):

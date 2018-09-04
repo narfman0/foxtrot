@@ -1,5 +1,6 @@
 import pyxel
 
+from foxtrot import saves
 from foxtrot.ui.components.menu import Menu
 from foxtrot.ui.screens.gameplay import GameplayScreen
 from foxtrot.ui.screens.load import LoadScreen
@@ -15,13 +16,13 @@ class MenuScreen:
             options=[
                 ("New Game", self.start_game),
                 ("Load Game", self.load_game),
-                ("Quit", lambda: pyxel.quit()),
+                ("Quit", self.quit),
             ]
         )
 
     def update(self):
         if pyxel.btnp(pyxel.KEY_Q):
-            pyxel.quit()
+            self.quit()
         self.menu.update()
 
     def draw(self):
@@ -35,3 +36,7 @@ class MenuScreen:
 
     def start_game(self):
         self.screen_manager.push(GameplayScreen(self.screen_manager))
+
+    def quit(self):
+        saves.save_settings()
+        pyxel.quit()

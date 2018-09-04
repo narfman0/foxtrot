@@ -1,7 +1,7 @@
 import functools
 import pyxel
 
-from foxtrot.models import saves
+from foxtrot import saves
 from foxtrot.ui.components.menu import Menu
 from foxtrot.ui.screens.gameplay import GameplayScreen
 

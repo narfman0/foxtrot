@@ -1,7 +1,7 @@
 from unittest import mock, TestCase
 
+from foxtrot import saves
 from foxtrot.models import NPC, World
-from foxtrot.models import saves
 
 
 class WorldTest(TestCase):
