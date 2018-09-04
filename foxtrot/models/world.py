@@ -17,15 +17,15 @@ PLAYER_SPAWN_MAX_DISTANCE = 4
 
 
 class World:
-    def __init__(self):
+    def __init__(self, listener=None):
         self.chunks = []
+        self.listener = listener
 
-    def create(self, listener=None, seed=None, size=0, tile_width=8, distance_hint=8):
+    def create(self, seed=None, size=0, tile_width=8, distance_hint=8):
         """ Create world with given seed, will generate using system timestamp
         if none given. Size expected in the range (0-10)
         :param int distance_hint: rough number of tiles away player should spawn
         """
-        self.listener = listener
         random.seed(seed)
         self.tile_width = tile_width
         self.distance_hint = distance_hint
@@ -50,9 +50,9 @@ class World:
             chunk.update(self)
         if getattr(self, "missions", None):
             active_mission = self.missions[0]
-            active_mission.trigger.update(self)
-            if active_mission.trigger.should_trigger(self):
-                active_mission.manifestation.manifest(self)
+            active_mission.update(self)
+            if active_mission.should_trigger(self):
+                active_mission.manifest(self)
                 del self.missions[0]
 
     def create_menu(self, text, options):

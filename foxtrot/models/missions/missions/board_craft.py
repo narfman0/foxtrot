@@ -8,16 +8,6 @@ logger = log.create_logger(__name__)
 
 class BoardCraftMission(Mission):
     def __init__(self, random, world):
-        self.create_trigger(random, world)
-        self.create_manifestation(random, world)
-
-    def create_manifestation(self, random, world):
-        text = "Welcome back. Head to the closest %s office, stat." % world.company_name
-        options = ["Affirmative", "Time to hit the ol' dusty trail"]
-        callback = lambda *args: world.create_menu(text, options)
-        self.manifestation = manifestations.MenuManifestation(callback, text, options)
-
-    def create_trigger(self, random, world):
         ship = None
         for chunk in world.chunks[::-1]:
             if isinstance(chunk, Ship):
@@ -35,3 +25,8 @@ class BoardCraftMission(Mission):
             logger.warning("Bridge not found on ship %s!", ship)
             return
         self.trigger = triggers.RoomTrigger(room)
+
+    def manifest(self, world):
+        text = "Welcome back. Head to the closest %s office, stat." % world.company_name
+        options = ["Affirmative", "Time to hit the ol' dusty trail"]
+        world.create_menu(text, options)

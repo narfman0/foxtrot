@@ -21,9 +21,10 @@ class GameplayScreen:
         distance_hint = pyxel.width // 2 // TILE_WIDTH
         if world:
             self.world = world
+            world.listener = self
         else:
-            self.world = World().create(
-                listener=self, tile_width=TILE_WIDTH, distance_hint=distance_hint
+            self.world = World(listener=self).create(
+                tile_width=TILE_WIDTH, distance_hint=distance_hint
             )
 
     def update(self):
