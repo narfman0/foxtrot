@@ -9,3 +9,4 @@ class RoomType(Enum):
     CARGO = 5
     CORPORATION = 6
     CREW = 7
+    CONTROL = 8

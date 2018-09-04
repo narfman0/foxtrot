@@ -8,7 +8,7 @@ class AwakeMission(Mission):
     def __init__(self, random, world):
         pass
 
-    def manifest(self, world):
+    def manifest(self, random, world):
         text = "Cap! You ok? Head to your ship - should be nearby."
         options = ["Affirmative", "Time to hit the ol' dusty trail"]
         world.create_menu(text, options)

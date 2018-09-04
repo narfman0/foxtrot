@@ -11,7 +11,7 @@ class Mission(ABC):
             return self.trigger.should_trigger(world)
         raise NotImplemented
 
-    def manifest(self, world):
+    def manifest(self, random, world):
         if hasattr(self, "manifestation"):
             return self.manifestation.manifest(world)
         raise NotImplemented

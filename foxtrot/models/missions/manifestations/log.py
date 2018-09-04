@@ -8,5 +8,5 @@ class LogManifestation(Manifestation):
     def __init__(self, message):
         self.message = message
 
-    def manifest(self, world):
+    def manifest(self, random, world):
         logger.info(self.message)

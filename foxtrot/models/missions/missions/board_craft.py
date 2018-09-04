@@ -26,7 +26,7 @@ class BoardCraftMission(Mission):
             return
         self.trigger = triggers.RoomTrigger(room)
 
-    def manifest(self, world):
+    def manifest(self, random, world):
         text = "Welcome back. Head to the closest %s office, stat." % world.company_name
         options = ["Affirmative", "Time to hit the ol' dusty trail"]
         world.create_menu(text, options)

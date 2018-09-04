@@ -26,6 +26,7 @@ class World:
         if none given. Size expected in the range (0-10)
         :param int distance_hint: rough number of tiles away player should spawn
         """
+        self.credits = 0
         random.seed(seed)
         self.tile_width = tile_width
         self.distance_hint = distance_hint
@@ -52,7 +53,7 @@ class World:
             active_mission = self.missions[0]
             active_mission.update(self)
             if active_mission.should_trigger(self):
-                active_mission.manifest(self)
+                active_mission.manifest(random, self)
                 del self.missions[0]
 
     def create_menu(self, text, options):

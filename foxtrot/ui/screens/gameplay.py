@@ -17,7 +17,7 @@ class GameplayScreen:
     def __init__(self, screen_manager, world=None):
         self.screen_manager = screen_manager
         self.menus = []
-        self.debug = False
+        self.debug = True
         distance_hint = pyxel.width // 2 // TILE_WIDTH
         if world:
             self.world = world

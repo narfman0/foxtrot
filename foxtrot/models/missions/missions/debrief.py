@@ -1,5 +1,5 @@
 from foxtrot import log
-from foxtrot.models.chunk import RoomType
+from foxtrot.models.chunk import Colony, RoomType
 from foxtrot.models.missions.missions.mission import Mission
 from foxtrot.models.missions import manifestations, triggers
 
@@ -25,7 +25,12 @@ class DebriefMission(Mission):
                 tries += 1
         self.trigger = triggers.RoomTrigger(room)
 
-    def manifest(self, world):
-        text = "Youve cost us much. Last chance - start a colony or else"
+    def manifest(self, random, world):
+        colony = Colony(random)
+        world.chunks.append(colony)
+        world.credits += 10000
+        text = """You've cost us too much with this failure. We are giving you
+        one last chance - start a successful colony on %s or else. Here are
+        some credits to start.""" % colony.name
         options = ["Affirmative", "Can do, sir"]
         world.create_menu(text, options)
