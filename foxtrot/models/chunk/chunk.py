@@ -21,7 +21,9 @@ class Chunk:
         max_size=10000,
         room_min_size=8,
         room_max_size=16,
+        room_tries=200,
         name=None,
+        create=True,
     ):
         self.random = random
         self.width = width
@@ -40,14 +42,21 @@ class Chunk:
         self.dy = dy if dy is not None else 0
         self.name = name if name else words.generate(random)
         self.npcs = set()
-        self.tiles = generator.Generator(width=self.width, height=self.height)
-        self.tiles.place_random_rooms(room_min_size, room_max_size, 2, 1, 200)
-        self.tiles.generate_corridors("f")
-        self.tiles.prune_deadends(50)
-        self.tiles.generate_airlocks()
-        self.tiles.connect_all_rooms(0)
-        self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
-        self.tiles.place_walls()
+        self.room_min_size = room_min_size
+        self.room_max_size = room_max_size
+        self.room_tries = room_tries
+        if create:
+            self.create()
+
+    def create(self):
+            self.tiles = generator.Generator(width=self.width, height=self.height)
+            self.tiles.place_random_rooms(self.room_min_size, self.room_max_size, 2, 1, self.room_tries)
+            self.tiles.generate_corridors("f")
+            self.tiles.prune_deadends(50)
+            self.tiles.generate_airlocks()
+            self.tiles.connect_all_rooms(0)
+            self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
+            self.tiles.place_walls()
 
     def update(self, world):
         self.x += self.dx
