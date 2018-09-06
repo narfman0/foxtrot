@@ -2,6 +2,7 @@
 coords, tiles, and possibly npcs. """
 from foxtrot import log
 from foxtrot.models.chunk import generator
+from foxtrot.models.chunk.room_type import RoomType
 from foxtrot.models import words
 
 
@@ -57,6 +58,19 @@ class Chunk:
             self.tiles.connect_all_rooms(0)
             self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
             self.tiles.place_walls()
+
+    def initialize_traders(self, frequency=8):
+        """ Rough frequency of rooms. 8 would be about 1/8 of rooms are TRADER
+        """
+        total = 0
+        target = len(self.tiles.rooms) // frequency
+        for room in self.tiles.rooms:
+            if total >= target:
+                return
+            if getattr(room, 'type', None) is None:
+                room.type = RoomType.TRADER
+                total += 1
+
 
     def update(self, world):
         self.x += self.dx

@@ -11,3 +11,4 @@ class RoomType(Enum):
     CREW = 7
     CONTROL = 8
     FARM = 9
+    TRADER = 10

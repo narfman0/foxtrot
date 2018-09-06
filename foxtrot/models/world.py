@@ -27,6 +27,7 @@ class World:
         :param int distance_hint: rough number of tiles away player should spawn
         """
         self.credits = 0
+        self.salvage = 0
         random.seed(seed)
         self.tile_width = tile_width
         self.distance_hint = distance_hint
