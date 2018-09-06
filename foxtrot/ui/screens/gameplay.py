@@ -3,7 +3,7 @@ import functools
 import pyxel
 
 from foxtrot import log, saves
-from foxtrot.models import Colony, NPC, RoomType, Ship, World
+from foxtrot.models import Colony, NPC, Planet, RoomType, Ship, World
 from foxtrot.models.missions import triggers
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu
@@ -81,9 +81,26 @@ class GameplayScreen:
                         options.append((room_type.name, handler))
                     menu = Menu(text="Buildout colony with:", options=options, background_color=1)
                     self.menus.append(menu)
+            elif type(self.world.player.chunk) is Planet:
+                if room_type is RoomType.TRADER:
+                    options = []
+                    cost = self.world.create_salvage_cost()
+                    for amount in [1, 5, 10, 20]:
+                        handler = functools.partial(self.handle_purchase_salvage, amount, cost)
+                        text = "%d Salvage, $%d" % (amount, cost*amount)
+                        options.append((text, handler))
+                    options.append(("Back", self.menus.pop))
+                    menu = Menu(text="Purchase:", options=options, background_color=1)
+                    self.menus.append(menu)
         if pyxel.btnp(pyxel.KEY_F2):
             self.debug = not self.debug
         self.world.update()
+
+    def handle_purchase_salvage(self, amount, cost):
+        self.world.salvage += amount
+        self.world.credits -= (cost*amount)
+        logger.info('Purchased %d salvage for $%d', amount, cost*amount)
+
 
     def handle_save(self):
         saves.save(self.world)
