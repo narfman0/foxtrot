@@ -3,7 +3,7 @@ import functools
 import pyxel
 
 from foxtrot import log, saves
-from foxtrot.models import NPC, RoomType, Ship, World
+from foxtrot.models import Colony, NPC, RoomType, Ship, World
 from foxtrot.models.missions import triggers
 from foxtrot.ui.components import debug
 from foxtrot.ui.components.menu import Menu
@@ -57,9 +57,9 @@ class GameplayScreen:
                             self.world.player.y = room_y
             self.world.missions[0].trigger = triggers.BooleanTrigger()
             logger.info("Current mission trigger swapped to activate next check")
-        if pyxel.btnp(pyxel.KEY_E):
-            if self.world.player.in_room and type(self.world.player.chunk) is Ship:
-                room_type = getattr(self.world.player.room, "type", None)
+        if pyxel.btnp(pyxel.KEY_E) and self.world.player.in_room:
+            room_type = getattr(self.world.player.room, "type", None)
+            if type(self.world.player.chunk) is Ship:
                 if room_type is RoomType.BRIDGE:
                     x, y = self.world.player.position
                     destinations = self.world.get_destinations(x, y)
@@ -72,6 +72,15 @@ class GameplayScreen:
                         options.append((destination.name, handler))
                     menu = Menu(text="Travel to:", options=options, background_color=1)
                     self.menus.append(menu)
+            elif type(self.world.player.chunk) is Colony:
+                if room_type is RoomType.CONTROL:
+                    options = []
+                    room_types = [RoomType.WEAPONS, RoomType.CARGO, RoomType.CREW, RoomType.FARM]
+                    for room_type in room_types:
+                        handler = functools.partial(self.handle_buildout, room_type)
+                        options.append((room_type.name, handler))
+                    menu = Menu(text="Buildout colony with:", options=options, background_color=1)
+                    self.menus.append(menu)
         if pyxel.btnp(pyxel.KEY_F2):
             self.debug = not self.debug
         self.world.update()
@@ -83,6 +92,10 @@ class GameplayScreen:
     def handle_travel(self, origin, destination):
         self.menus.pop()
         self.world.travel(origin, destination)
+
+    def handle_buildout(self, room_type):
+        self.menus.pop()
+        self.world.buildout(room_type)
 
     def handle_movement_input(self):
         if pyxel.btn(pyxel.KEY_DOWN):

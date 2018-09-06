@@ -526,6 +526,14 @@ class Generator:
                             self.grid[x][y] = WALL
                             break
 
+    def remove_walls(self):
+        """ Remove all walls from tiles """
+        for x in range(self.width):
+            for y in range(self.height):
+                if self.grid[x][y] is WALL:
+                    self.grid[x][y] = EMPTY
+
+
     def connect_all_rooms(self, extraDoorChance=0):
         """
         Joins rooms to the corridors

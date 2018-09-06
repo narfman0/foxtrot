@@ -1,5 +1,6 @@
 from foxtrot import log
 from foxtrot.models.chunk import Colony, RoomType
+from foxtrot.models.missions.missions import BuildoutMission
 from foxtrot.models.missions.missions.mission import Mission
 from foxtrot.models.missions import manifestations, triggers
 
@@ -34,3 +35,4 @@ class DebriefMission(Mission):
         some credits to start.""" % colony.name
         options = ["Affirmative", "Can do, sir"]
         world.create_menu(text, options)
+        world.missions.append(BuildoutMission(random, world))

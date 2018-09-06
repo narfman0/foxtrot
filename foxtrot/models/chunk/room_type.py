@@ -10,3 +10,4 @@ class RoomType(Enum):
     CORPORATION = 6
     CREW = 7
     CONTROL = 8
+    FARM = 9

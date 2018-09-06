@@ -6,7 +6,7 @@ import random
 from foxtrot import log
 from foxtrot.models import words
 from foxtrot.models.missions.generate import create_missions
-from foxtrot.models.chunk import Planet, Ship, Station
+from foxtrot.models.chunk import Colony, Planet, Ship, Station
 from foxtrot.models.npc import NPC
 
 
@@ -103,6 +103,13 @@ class World:
                 logger.warning("Failed to create ship with exception: %s, retrying", e)
         self.chunks.append(ship)
         return ship
+
+    def buildout(self, room_type):
+        colony = None
+        for chunk in self.chunks:
+            if isinstance(chunk, Colony):
+                colony = chunk
+        colony.add_room(room_type)
 
     def travel(self, origin, destination):
         logger.info("%s traveling to %s", origin, destination)
