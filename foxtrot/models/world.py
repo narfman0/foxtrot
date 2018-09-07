@@ -151,6 +151,3 @@ class World:
         for chunk in self.chunks:
             if chunk.aabb(npc.x, npc.y):
                 yield chunk
-
-    def create_salvage_cost(self):
-        return random.randint(90, 110)

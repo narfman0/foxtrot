@@ -83,7 +83,7 @@ class GameplayScreen:
                     ]
                     for room_type, cost in room_options:
                         if self.world.salvage < cost:
-                            continue
+                            break
                         handler = functools.partial(self.handle_buildout, room_type, cost)
                         text = '%s: %dS' % (room_type.name, cost)
                         options.append((text, handler))
@@ -93,12 +93,12 @@ class GameplayScreen:
             elif type(self.world.player.chunk) is Planet:
                 if room_type is RoomType.TRADER:
                     options = []
-                    cost = self.world.create_salvage_cost()
+                    cost = self.world.player.room.salvage_cost
                     for amount in [1, 5, 10, 20]:
                         if self.world.credits < amount * cost:
                             break
                         handler = functools.partial(self.handle_purchase_salvage, amount, cost)
-                        text = "%d Salvage, $%d" % (amount, cost*amount)
+                        text = "%d Salvage, $%d" % (amount, cost * amount)
                         options.append((text, handler))
                     options.append(("Back", self.menus.pop))
                     menu = Menu(text="Purchase:", options=options, background_color=1)
@@ -113,8 +113,8 @@ class GameplayScreen:
 
     def handle_purchase_salvage(self, amount, cost):
         self.world.salvage += amount
-        self.world.credits -= (cost*amount)
-        logger.info('Purchased %d salvage for $%d', amount, cost*amount)
+        self.world.credits -= (cost * amount)
+        logger.info('Purchased %d salvage for $%d', amount, cost * amount)
         self.menus.pop()
 
     def handle_save(self):

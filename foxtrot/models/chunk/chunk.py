@@ -59,9 +59,8 @@ class Chunk:
             self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
             self.tiles.place_walls()
 
-    def initialize_traders(self, frequency=8):
-        """ Rough frequency of rooms. 8 would be about 1/8 of rooms are TRADER
-        """
+    def initialize_traders(self, random, frequency=8):
+        """ Rough frequency of rooms. 8 would be about 1/8 of rooms are TRADER """
         total = 0
         target = len(self.tiles.rooms) // frequency
         for room in self.tiles.rooms:
@@ -69,6 +68,7 @@ class Chunk:
                 return
             if getattr(room, 'type', None) is None:
                 room.type = RoomType.TRADER
+                room.salvage_cost = random.randint(90, 110)
                 total += 1
 
 
