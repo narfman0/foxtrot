@@ -75,10 +75,19 @@ class GameplayScreen:
             elif type(self.world.player.chunk) is Colony:
                 if room_type is RoomType.CONTROL:
                     options = []
-                    room_types = [RoomType.WEAPONS, RoomType.CARGO, RoomType.CREW, RoomType.FARM]
-                    for room_type in room_types:
-                        handler = functools.partial(self.handle_buildout, room_type)
-                        options.append((room_type.name, handler))
+                    room_options = [
+                        (RoomType.CARGO, 1000),
+                        (RoomType.CREW, 1200),
+                        (RoomType.FARM, 1500),
+                        (RoomType.WEAPONS, 2000),
+                    ]
+                    for room_type, cost in room_options:
+                        if self.world.salvage < cost:
+                            continue
+                        handler = functools.partial(self.handle_buildout, room_type, cost)
+                        text = '%s: %dS' % (room_type.name, cost)
+                        options.append((text, handler))
+                    options.append(("Back", self.menus.pop))
                     menu = Menu(text="Buildout colony with:", options=options, background_color=1)
                     self.menus.append(menu)
             elif type(self.world.player.chunk) is Planet:
@@ -96,6 +105,10 @@ class GameplayScreen:
                     self.menus.append(menu)
         if pyxel.btnp(pyxel.KEY_F2):
             self.debug = not self.debug
+        if self.debug and pyxel.btnp(pyxel.KEY_F3):
+            self.world.credits += 1000
+        if self.debug and pyxel.btnp(pyxel.KEY_F4):
+            self.world.salvage += 1000
         self.world.update()
 
     def handle_purchase_salvage(self, amount, cost):
@@ -103,7 +116,6 @@ class GameplayScreen:
         self.world.credits -= (cost*amount)
         logger.info('Purchased %d salvage for $%d', amount, cost*amount)
         self.menus.pop()
-
 
     def handle_save(self):
         saves.save(self.world)
@@ -113,9 +125,9 @@ class GameplayScreen:
         self.menus.pop()
         self.world.travel(origin, destination)
 
-    def handle_buildout(self, room_type):
+    def handle_buildout(self, room_type, cost):
         self.menus.pop()
-        self.world.buildout(room_type)
+        self.world.buildout(room_type, cost)
 
     def handle_movement_input(self):
         if pyxel.btn(pyxel.KEY_DOWN):

@@ -105,12 +105,14 @@ class World:
         self.chunks.append(ship)
         return ship
 
-    def buildout(self, room_type):
+    def buildout(self, room_type, cost):
         colony = None
         for chunk in self.chunks:
             if isinstance(chunk, Colony):
                 colony = chunk
         colony.add_room(room_type)
+        self.salvage -= cost
+        logger.warning('Buildout %s for %dS', room_type.name, cost)
 
     def travel(self, origin, destination):
         logger.info("%s traveling to %s", origin, destination)
