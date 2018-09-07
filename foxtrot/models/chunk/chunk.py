@@ -69,6 +69,7 @@ class Chunk:
             if getattr(room, 'type', None) is None:
                 room.type = RoomType.TRADER
                 room.salvage_cost = random.randint(90, 110)
+                room.fuel_cost = random.randint(55, 75)
                 total += 1
 
 

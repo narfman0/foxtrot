@@ -2,7 +2,7 @@ import functools
 
 import pyxel
 
-from foxtrot import log, saves
+from foxtrot import log, math, saves
 from foxtrot.models import Colony, NPC, Planet, RoomType, Ship, World
 from foxtrot.models.missions import triggers
 from foxtrot.ui.components import debug
@@ -66,10 +66,15 @@ class GameplayScreen:
                     origin = self.world.player.chunk
                     options = []
                     for destination in destinations:
+                        cost = math.travel_cost((origin.x, origin.y), (destination.x, destination.y))
+                        if not self.world.fuel >= cost:
+                            continue
                         handler = functools.partial(
                             self.handle_travel, origin, destination
                         )
-                        options.append((destination.name, handler))
+                        text = '%s for %dF' % (destination.name, cost)
+                        options.append((text, handler))
+                    options.append(("Back", self.menus.pop))
                     menu = Menu(text="Travel to:", options=options, background_color=1)
                     self.menus.append(menu)
             elif type(self.world.player.chunk) is Colony:
@@ -93,12 +98,19 @@ class GameplayScreen:
             elif type(self.world.player.chunk) is Planet:
                 if room_type is RoomType.TRADER:
                     options = []
-                    cost = self.world.player.room.salvage_cost
+                    salvage_cost = self.world.player.room.salvage_cost
                     for amount in [1, 5, 10, 20]:
-                        if self.world.credits < amount * cost:
+                        if self.world.credits < amount * salvage_cost:
                             break
-                        handler = functools.partial(self.handle_purchase_salvage, amount, cost)
-                        text = "%d Salvage, $%d" % (amount, cost * amount)
+                        handler = functools.partial(self.handle_purchase_salvage, amount, salvage_cost)
+                        text = "%d Salvage, $%d" % (amount, salvage_cost * amount)
+                        options.append((text, handler))
+                    fuel_cost = self.world.player.room.fuel_cost
+                    for amount in [1, 5, 10, 20]:
+                        if self.world.credits < amount * fuel_cost:
+                            break
+                        handler = functools.partial(self.handle_purchase_fuel, amount, fuel_cost)
+                        text = "%d Fuel, $%d" % (amount, fuel_cost * amount)
                         options.append((text, handler))
                     options.append(("Back", self.menus.pop))
                     menu = Menu(text="Purchase:", options=options, background_color=1)
@@ -109,7 +121,15 @@ class GameplayScreen:
             self.world.credits += 1000
         if self.debug and pyxel.btnp(pyxel.KEY_F4):
             self.world.salvage += 1000
+        if self.debug and pyxel.btnp(pyxel.KEY_F5):
+            self.world.fuel += 100
         self.world.update()
+
+    def handle_purchase_fuel(self, amount, cost):
+        self.world.fuel += amount
+        self.world.credits -= (cost * amount)
+        logger.info('Purchased %d fuel for $%d', amount, cost * amount)
+        self.menus.pop()
 
     def handle_purchase_salvage(self, amount, cost):
         self.world.salvage += amount
@@ -190,6 +210,8 @@ class GameplayScreen:
         pyxel.text(4, 4, text, 12)
         text = "Salvage: %d" % self.world.salvage
         pyxel.text(4, 4 + 8, text, 12)
+        text = "Fuel: %d" % self.world.fuel
+        pyxel.text(4, 4 + 16, text, 12)
 
     def draw_player(self):
         pyxel.circ(pyxel.width / 2, pyxel.height / 2, TILE_WIDTH // 2, 7)

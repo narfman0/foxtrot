@@ -1,3 +1,24 @@
+import math
+
+
+def distance(origin, destination):
+    """ Calculate distance between origin and destination
+    :param tuple origin: 2-tuple x, y coordinates
+    :param tuple destination: 2-tuple x, y coordinates
+    """
+    ox, oy = origin
+    dx, dy = destination
+    return math.sqrt((ox - dx) ** 2 + (oy - dy) ** 2)
+
+
+def distance_cost(distance):
+    """ Create a cost according to distance traveled. Should be roughly
+    logarithmic; using wolfram alpha log fit regression analysis:
+    log fit {10, 8},{100,10},{1000, 15},{5000, 20}
+    """
+    return int(1.92577 * math.log(3.65906 * distance))
+
+
 def lerp(origin, destination, progress):
     """ Linear interpolation between origin and destination.
     :param tuple origin: 2-tuple of x, y coordinates for origin
@@ -18,3 +39,7 @@ def smoothstep(x):
     elif x >= 1:
         return 1
     return 3 * x ** 2 - 2 * x ** 3
+
+
+def travel_cost(origin, destination):
+    return distance_cost(distance(origin, destination))

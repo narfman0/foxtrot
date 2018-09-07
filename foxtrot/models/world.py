@@ -1,9 +1,8 @@
 """ World contains multiple chunks, which are populated game sections """
-import math
 import operator
 import random
 
-from foxtrot import log
+from foxtrot import log, math
 from foxtrot.models import words
 from foxtrot.models.missions.generate import create_missions
 from foxtrot.models.chunk import Colony, Planet, Ship, Station
@@ -28,6 +27,7 @@ class World:
         """
         self.credits = 0
         self.salvage = 0
+        self.fuel = 0
         random.seed(seed)
         self.tile_width = tile_width
         self.distance_hint = distance_hint
@@ -115,7 +115,6 @@ class World:
         logger.warning('Buildout %s for %dS', room_type.name, cost)
 
     def travel(self, origin, destination):
-        logger.info("%s traveling to %s", origin, destination)
         x = destination.x - origin.x
         y = destination.y - origin.y
         direction = random.randint(0, 3)
@@ -136,12 +135,15 @@ class World:
             x -= destination.width // 2 + origin.width // 2
             y += destination.airlock_y - origin.airlock_y
         origin.travel(x, y)
+        cost = math.travel_cost((origin.x, origin.y), (destination.x, destination.y))
+        self.fuel -= cost
+        logger.info("%s traveled to %s for %d fuel", origin, destination, cost)
 
     def get_destinations(self, x, y, sort=True):
         destinations = []
         for chunk in self.chunks:
             if not isinstance(chunk, Ship):
-                distance = math.sqrt((x - chunk.x) ** 2 + (y - chunk.y) ** 2)
+                distance = math.distance((x, y), (chunk.x, chunk.y))
                 destinations.append((distance, chunk))
         destinations = sorted(destinations, key=operator.itemgetter(0))
         return [destination[1] for destination in destinations]
