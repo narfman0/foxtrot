@@ -86,6 +86,8 @@ class GameplayScreen:
                     options = []
                     cost = self.world.create_salvage_cost()
                     for amount in [1, 5, 10, 20]:
+                        if self.world.credits < amount * cost:
+                            break
                         handler = functools.partial(self.handle_purchase_salvage, amount, cost)
                         text = "%d Salvage, $%d" % (amount, cost*amount)
                         options.append((text, handler))
@@ -100,6 +102,7 @@ class GameplayScreen:
         self.world.salvage += amount
         self.world.credits -= (cost*amount)
         logger.info('Purchased %d salvage for $%d', amount, cost*amount)
+        self.menus.pop()
 
 
     def handle_save(self):
@@ -156,6 +159,11 @@ class GameplayScreen:
         if self.debug:
             debug.draw(self)
         self.draw_player()
+        self.draw_hud()
+        for menu in self.menus:
+            menu.draw()
+
+    def draw_hud(self):
         if self.world.player.in_chunk:
             text = self.world.player.chunk.name
             if self.world.player.in_room and hasattr(self.world.player.room, "type"):
@@ -166,8 +174,10 @@ class GameplayScreen:
                     else room_type.name
                 )
             pyxel.text(pyxel.width / 2 - len(text) * 2, 4, text, 12)
-        for menu in self.menus:
-            menu.draw()
+        text = "Credits: $%d" % self.world.credits
+        pyxel.text(4, 4, text, 12)
+        text = "Salvage: %d" % self.world.salvage
+        pyxel.text(4, 4 + 8, text, 12)
 
     def draw_player(self):
         pyxel.circ(pyxel.width / 2, pyxel.height / 2, TILE_WIDTH // 2, 7)
