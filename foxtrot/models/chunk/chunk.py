@@ -72,6 +72,17 @@ class Chunk:
                 room.fuel_cost = random.randint(55, 75)
                 total += 1
 
+    def initialize_crew(self, random, frequency=10):
+        """ Rough frequency of rooms """
+        total = 0
+        target = len(self.tiles.rooms) // frequency
+        for room in self.tiles.rooms:
+            if total >= target:
+                return
+            if getattr(room, 'type', None) is None:
+                room.type = RoomType.CREW
+                room.cost = random.randint(3400, 6400)
+                total += 1
 
     def update(self, world):
         self.x += self.dx
@@ -109,6 +120,11 @@ class Chunk:
             ):
                 return room
         return None
+
+    def get_rooms_with_type(self, room_type):
+        for room in self.tiles.rooms:
+            if getattr(room, 'type', None) == room_type:
+                yield room
 
     def get_room_position(self, room):
         x = self.x - self.width // 2 + room.x + room.width // 2

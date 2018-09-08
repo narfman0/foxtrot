@@ -10,4 +10,5 @@ class Planet(Chunk):
         Chunk.__init__(
             self, random, x=x, y=y, width=width, height=height, max_size=max_size
         )
+        self.initialize_crew(random)
         self.initialize_traders(random)

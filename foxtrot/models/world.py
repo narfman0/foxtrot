@@ -5,7 +5,7 @@ import random
 from foxtrot import log, math
 from foxtrot.models import words
 from foxtrot.models.missions.generate import create_missions
-from foxtrot.models.chunk import Colony, Planet, Ship, Station
+from foxtrot.models.chunk import Colony, Planet, RoomType, Ship, Station
 from foxtrot.models.npc import NPC
 
 
@@ -39,7 +39,6 @@ class World:
             self.chunks.append(Station(random))
         self.home_chunk = self.chunks[0]
         self.create_player(self.home_chunk)
-        # TODO keep track of ships better / ownership
         self.create_ship()
         self.company_name = words.generate_company_name(random)
         self.missions = create_missions(random, self)
@@ -153,3 +152,20 @@ class World:
         for chunk in self.chunks:
             if chunk.aabb(npc.x, npc.y):
                 yield chunk
+
+    def get_ship(self):
+        for chunk in self.chunks:
+            if isinstance(chunk, Ship):
+                return chunk
+
+    def purchase_crew(self, room_type, cost):
+        self.credits -= cost
+        ship = self.get_ship()
+        candidates = ship.get_rooms_with_type(RoomType.LIFE)
+        room = random.choice(list(candidates))
+        x, y = ship.get_room_position(room)
+        x += random.randint(-1, 1)
+        y += random.randint(-1, 1)
+        npc = NPC(random, x=x, y=y)
+        npc.affinity = room_type
+        ship.npcs.add(npc)

@@ -20,4 +20,5 @@ class Station(Chunk):
             height=height,
             max_size=max_size,
         )
+        self.initialize_crew(random)
         self.initialize_traders(random)
