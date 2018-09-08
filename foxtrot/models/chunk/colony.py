@@ -3,6 +3,7 @@ from foxtrot.models.chunk.chunk import Chunk
 from foxtrot.models.chunk.room_type import RoomType
 
 logger = log.create_logger(__name__)
+FRAMES_BETWEEN_MINING_CHECKS = 5 * 60
 
 
 class Colony(Chunk):
@@ -11,6 +12,7 @@ class Colony(Chunk):
         while not hasattr(self, 'tiles') or len(self.tiles.rooms) != 1:
             Chunk.__init__(self, random, width=size, height=size, room_tries=2, **kwargs)
         self.tiles.rooms[0].type = RoomType.CONTROL
+        self.mining_check_frame = 0
 
     def add_room(self, room_type):
         current_rooms = len(self.tiles.rooms)
@@ -30,3 +32,23 @@ class Colony(Chunk):
         if room is None:
             logger.warning('Failed to create room: %s', room_type.name)
         return room
+
+    def update(self, world):
+        Chunk.update(self, world)
+        if self.mining_check_frame <= 0:
+            world.fuel += self.get_mining_count()
+            self.mining_check_frame = FRAMES_BETWEEN_MINING_CHECKS
+        else:
+            self.mining_check_frame -= 1
+
+    def get_mining_count(self):
+        """ Return the count of mining/refinery pairs """
+        mining = 0
+        refinery = 0
+        for room in self.tiles.rooms:
+            room_type = getattr(room, 'type', None)
+            if room_type == RoomType.MINING:
+                mining += 1
+            elif room_type == RoomType.REFINERY:
+                refinery += 1
+        return min(mining, refinery)

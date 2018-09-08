@@ -12,3 +12,5 @@ class RoomType(Enum):
     CONTROL = 8
     FARM = 9
     TRADER = 10
+    MINING = 11
+    REFINERY = 12

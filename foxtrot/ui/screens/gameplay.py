@@ -84,7 +84,9 @@ class GameplayScreen:
                         (RoomType.CARGO, 1000),
                         (RoomType.CREW, 1200),
                         (RoomType.FARM, 1500),
-                        (RoomType.WEAPONS, 2000),
+                        (RoomType.MINING, 2500),
+                        (RoomType.WEAPONS, 3000),
+                        (RoomType.REFINERY, 5000),
                     ]
                     for room_type, cost in room_options:
                         if self.world.salvage < cost:
