@@ -41,9 +41,9 @@ def load_settings():
             updates = json.load(f)
             settings.settings.update(updates)
     except Exception as e:
-        logger.warning('Failed to load settings with exception: %s', e)
+        logger.warning("Failed to load settings with exception: %s", e)
 
 
 def save_settings():
-    with open(settings_path, 'w') as outfile:
+    with open(settings_path, "w") as outfile:
         json.dump(settings.settings, outfile)

@@ -14,7 +14,9 @@ class Menu:
 
     def __init__(self, listener=None, text=None, options=None, background_color=None):
         self.listener = listener
-        self.text = util.split_string(text, pyxel.width // 2 / self.text_width) if text else []
+        self.text = (
+            util.split_string(text, pyxel.width // 2 / self.text_width) if text else []
+        )
         self.options = options
         self.current_option = 0
         self.background_color = background_color

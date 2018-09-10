@@ -11,6 +11,7 @@ dill = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-pylint = "*"
+black = "*"
 
 [requires]
 python_version = "3.7"

@@ -30,9 +30,12 @@ class DebriefMission(Mission):
         colony = Colony(random)
         world.chunks.append(colony)
         world.credits += 10000
-        text = """You've cost us too much with this failure. We are giving you
+        text = (
+            """You've cost us too much with this failure. We are giving you
         one last chance - start a successful colony on %s or else. Here are
-        some credits to start.""" % colony.name
+        some credits to start."""
+            % colony.name
+        )
         options = ["Affirmative", "Can do, sir"]
         world.create_menu(text, options)
         world.missions.append(BuildoutMission(random, world))

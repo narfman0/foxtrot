@@ -111,7 +111,7 @@ class World:
                 colony = chunk
         colony.add_room(room_type)
         self.salvage -= cost
-        logger.warning('Buildout %s for %dS', room_type.name, cost)
+        logger.warning("Buildout %s for %dS", room_type.name, cost)
 
     def travel(self, origin, destination):
         x = destination.x - origin.x

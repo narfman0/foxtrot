@@ -50,14 +50,16 @@ class Chunk:
             self.create()
 
     def create(self):
-            self.tiles = generator.Generator(width=self.width, height=self.height)
-            self.tiles.place_random_rooms(self.room_min_size, self.room_max_size, 2, 1, self.room_tries)
-            self.tiles.generate_corridors("f")
-            self.tiles.prune_deadends(50)
-            self.tiles.generate_airlocks()
-            self.tiles.connect_all_rooms(0)
-            self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
-            self.tiles.place_walls()
+        self.tiles = generator.Generator(width=self.width, height=self.height)
+        self.tiles.place_random_rooms(
+            self.room_min_size, self.room_max_size, 2, 1, self.room_tries
+        )
+        self.tiles.generate_corridors("f")
+        self.tiles.prune_deadends(50)
+        self.tiles.generate_airlocks()
+        self.tiles.connect_all_rooms(0)
+        self.tiles.join_unconnected_areas(self.tiles.find_unconnected_areas())
+        self.tiles.place_walls()
 
     def initialize_traders(self, random, frequency=8):
         """ Rough frequency of rooms. 8 would be about 1/8 of rooms are TRADER """
@@ -66,7 +68,7 @@ class Chunk:
         for room in self.tiles.rooms:
             if total >= target:
                 return
-            if getattr(room, 'type', None) is None:
+            if getattr(room, "type", None) is None:
                 room.type = RoomType.TRADER
                 room.salvage_cost = random.randint(90, 110)
                 room.fuel_cost = random.randint(55, 75)
@@ -79,7 +81,7 @@ class Chunk:
         for room in self.tiles.rooms:
             if total >= target:
                 return
-            if getattr(room, 'type', None) is None:
+            if getattr(room, "type", None) is None:
                 room.type = RoomType.CREW
                 room.cost = random.randint(3400, 6400)
                 total += 1
@@ -123,7 +125,7 @@ class Chunk:
 
     def get_rooms_with_type(self, room_type):
         for room in self.tiles.rooms:
-            if getattr(room, 'type', None) == room_type:
+            if getattr(room, "type", None) == room_type:
                 yield room
 
     def get_room_position(self, room):

@@ -533,7 +533,6 @@ class Generator:
                 if self.grid[x][y] is WALL:
                     self.grid[x][y] = EMPTY
 
-
     def connect_all_rooms(self, extraDoorChance=0):
         """
         Joins rooms to the corridors

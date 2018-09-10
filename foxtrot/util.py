@@ -4,11 +4,11 @@ def split_string(str, limit, sep=" "):
         raise ValueError("limit is too small")
     res, part, others = [], words[0], words[1:]
     for word in others:
-        if len(sep)+len(word) > limit-len(part):
+        if len(sep) + len(word) > limit - len(part):
             res.append(part)
             part = word
         else:
-            part += sep+word
+            part += sep + word
     if part:
         res.append(part)
     return res

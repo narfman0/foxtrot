@@ -12,10 +12,10 @@ class App:
         saves.load_settings()
         self.screens = [MenuScreen(self)]
         pyxel.init(
-            settings.settings['screen_width'],
-            settings.settings['screen_height'],
+            settings.settings["screen_width"],
+            settings.settings["screen_height"],
             caption="foxtrot",
-            scale=settings.settings['scale'],
+            scale=settings.settings["scale"],
         )
         pyxel.run(self.update, self.draw)
 
