@@ -107,73 +107,9 @@ class GameplayScreen:
                     self.menus.append(menu)
             elif type(self.world.player.chunk) is Planet:
                 if room_type is RoomType.CREW:
-                    cost = self.world.player.room.cost
-                    options = []
-                    room_options = [
-                        (RoomType.FARM, cost),
-                        (RoomType.MINING, cost),
-                        (RoomType.WEAPONS, cost),
-                        (RoomType.REFINERY, cost),
-                    ]
-                    for room_type, cost in room_options:
-                        if self.world.credits < cost:
-                            break
-                        handler = functools.partial(
-                            self.handle_purchase_crew, room_type, cost
-                        )
-                        text = "Affinity: %s $%d" % (room_type.name, cost)
-                        options.append((text, handler))
-                    options.append(("Back", self.menus.pop))
-                    menu = Menu(text="Hire crew:", options=options, background_color=1)
-                    self.menus.append(menu)
+                    self.create_crew_menu()
                 if room_type is RoomType.TRADER:
-                    options = []
-                    salvage_cost = self.world.player.room.salvage_cost
-                    salvage_buy_cost = int(1.1 * salvage_cost)
-                    salvage_sell_cost = int(.9 * salvage_cost)
-                    for amount in [1, 5, 10, 20]:
-                        if self.world.credits >= amount * salvage_buy_cost:
-                            handler = functools.partial(
-                                self.handle_purchase_salvage, amount, salvage_buy_cost
-                            )
-                            text = "Buy %d Salvage, $%d" % (
-                                amount,
-                                salvage_buy_cost * amount,
-                            )
-                            options.append((text, handler))
-                        if self.world.salvage >= amount:
-                            handler = functools.partial(
-                                self.handle_purchase_salvage,
-                                -amount,
-                                -salvage_sell_cost,
-                            )
-                            text = "Sell %d Salvage, $%d" % (
-                                amount,
-                                salvage_sell_cost * amount,
-                            )
-                            options.append((text, handler))
-                    fuel_cost = self.world.player.room.fuel_cost
-                    fuel_buy_cost = int(1.1 * fuel_cost)
-                    fuel_sell_cost = int(.9 * fuel_cost)
-                    for amount in [1, 5, 10, 20]:
-                        if self.world.credits >= amount * fuel_buy_cost:
-                            handler = functools.partial(
-                                self.handle_purchase_fuel, amount, fuel_buy_cost
-                            )
-                            text = "Buy %d Fuel, $%d" % (amount, fuel_buy_cost * amount)
-                            options.append((text, handler))
-                        if self.world.fuel >= amount:
-                            handler = functools.partial(
-                                self.handle_purchase_fuel, -amount, -fuel_sell_cost
-                            )
-                            text = "Sell %d Fuel, $%d" % (
-                                amount,
-                                fuel_sell_cost * amount,
-                            )
-                            options.append((text, handler))
-                    options.append(("Back", self.menus.pop))
-                    menu = Menu(text="Purchase:", options=options, background_color=1)
-                    self.menus.append(menu)
+                    self.create_trader_menu()
         if pyxel.btnp(pyxel.KEY_F2):
             self.debug = not self.debug
         if self.debug and pyxel.btnp(pyxel.KEY_F3):
@@ -182,6 +118,10 @@ class GameplayScreen:
             self.world.salvage += 1000
         if self.debug and pyxel.btnp(pyxel.KEY_F5):
             self.world.fuel += 100
+        if self.debug and pyxel.btnp(pyxel.KEY_F6):
+            self.create_crew_menu()
+        if self.debug and pyxel.btnp(pyxel.KEY_F7):
+            self.create_trader_menu()
         self.world.update()
 
     def handle_purchase_crew(self, room_type, cost):
@@ -317,6 +257,63 @@ class GameplayScreen:
 
     def create_menu(self, text, options):
         menu = Menu(listener=self, text=text, options=options, background_color=1)
+        self.menus.append(menu)
+
+    def create_crew_menu(self):
+        cost = getattr(self.world.player.room, "cost", 1000)
+        options = []
+        room_options = [
+            (RoomType.FARM, cost),
+            (RoomType.MINING, cost),
+            (RoomType.WEAPONS, cost),
+            (RoomType.REFINERY, cost),
+        ]
+        for room_type, cost in room_options:
+            if self.world.credits < cost:
+                break
+            handler = functools.partial(self.handle_purchase_crew, room_type, cost)
+            text = "Affinity: %s $%d" % (room_type.name, cost)
+            options.append((text, handler))
+        options.append(("Back", self.menus.pop))
+        menu = Menu(text="Hire crew:", options=options, background_color=1)
+        self.menus.append(menu)
+
+    def create_trader_menu(self):
+        options = []
+        salvage_cost = getattr(self.world.player.room, "salvage_cost", 100)
+        salvage_buy_cost = int(1.1 * salvage_cost)
+        salvage_sell_cost = int(.9 * salvage_cost)
+        for amount in [1, 5, 10, 20]:
+            if self.world.credits >= amount * salvage_buy_cost:
+                handler = functools.partial(
+                    self.handle_purchase_salvage, amount, salvage_buy_cost
+                )
+                text = "Buy %d Salvage, $%d" % (amount, salvage_buy_cost * amount)
+                options.append((text, handler))
+            if self.world.salvage >= amount:
+                handler = functools.partial(
+                    self.handle_purchase_salvage, -amount, -salvage_sell_cost
+                )
+                text = "Sell %d Salvage, $%d" % (amount, salvage_sell_cost * amount)
+                options.append((text, handler))
+        fuel_cost = getattr(self.world.player.room, "fuel_cost", 100)
+        fuel_buy_cost = int(1.1 * fuel_cost)
+        fuel_sell_cost = int(.9 * fuel_cost)
+        for amount in [1, 5, 10, 20]:
+            if self.world.credits >= amount * fuel_buy_cost:
+                handler = functools.partial(
+                    self.handle_purchase_fuel, amount, fuel_buy_cost
+                )
+                text = "Buy %d Fuel, $%d" % (amount, fuel_buy_cost * amount)
+                options.append((text, handler))
+            if self.world.fuel >= amount:
+                handler = functools.partial(
+                    self.handle_purchase_fuel, -amount, -fuel_sell_cost
+                )
+                text = "Sell %d Fuel, $%d" % (amount, fuel_sell_cost * amount)
+                options.append((text, handler))
+        options.append(("Back", self.menus.pop))
+        menu = Menu(text="Purchase:", options=options, background_color=1)
         self.menus.append(menu)
 
     def handle_selection(self, selection):

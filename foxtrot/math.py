@@ -1,6 +1,16 @@
 import math
 
 
+def productivity(affinity_count):
+    """ Return number representing productivity given the affinity count
+    e.g. if you have nothing, we still automatically produce, but if there
+    is someone, it will produce more efficiently.
+    """
+    if affinity_count == 0:
+        return 0.3
+    return 0.419874 * math.log(11.2406 * affinity_count)
+
+
 def distance(origin, destination):
     """ Calculate distance between origin and destination
     :param tuple origin: 2-tuple x, y coordinates

@@ -105,10 +105,7 @@ class World:
         return ship
 
     def buildout(self, room_type, cost):
-        colony = None
-        for chunk in self.chunks:
-            if isinstance(chunk, Colony):
-                colony = chunk
+        colony = self.get_colony()
         colony.add_room(room_type)
         self.salvage -= cost
         logger.warning("Buildout %s for %dS", room_type.name, cost)
@@ -158,14 +155,23 @@ class World:
             if isinstance(chunk, Ship):
                 return chunk
 
+    def get_colony(self):
+        for chunk in self.chunks:
+            if isinstance(chunk, Colony):
+                return chunk
+
     def purchase_crew(self, room_type, cost):
         self.credits -= cost
-        ship = self.get_ship()
-        candidates = ship.get_rooms_with_type(RoomType.LIFE)
-        room = random.choice(list(candidates))
-        x, y = ship.get_room_position(room)
-        x += random.randint(-1, 1)
-        y += random.randint(-1, 1)
-        npc = NPC(random, x=x, y=y)
-        npc.affinity = room_type
-        ship.npcs.add(npc)
+        chunk = self.get_colony()
+        candidates = list(chunk.get_rooms_with_type(room_type))
+        if not candidates:
+            candidates = chunk.tiles.rooms
+        if not candidates:
+            chunk = self.get_ship()
+            candidates = chunk.tiles.rooms
+        room = random.choice(candidates)
+        x, y = chunk.get_room_position(room)
+        x += random.randint(-2, 2)
+        y += random.randint(-2, 2)
+        npc = NPC(random, x=x, y=y, affinity=room_type)
+        chunk.npcs.add(npc)

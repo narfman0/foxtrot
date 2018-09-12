@@ -40,7 +40,17 @@ class Colony(Chunk):
     def update(self, world):
         Chunk.update(self, world)
         if self.mining_check_frame <= 0:
-            world.fuel += self.get_mining_count()
+            fuel_unused = getattr(self, "fuel_unused", 0.0)
+            mining_count, refinery_count = self.get_mining_count()
+            mining_affinity, refinery_affinity = self.get_mining_affinity_counts()
+            fuel_created = min(
+                mining_count * math.productivity(mining_affinity),
+                refinery_count * math.productivity(refinery_affinity),
+            )
+            fuel_unused += fuel_created
+            fuel_made = int(fuel_unused)
+            self.fuel_unused = fuel_unused - fuel_made
+            world.fuel += fuel_made
             self.mining_check_frame = FRAMES_BETWEEN_MINING_CHECKS
         else:
             self.mining_check_frame -= 1
@@ -55,4 +65,16 @@ class Colony(Chunk):
                 mining += 1
             elif room_type == RoomType.REFINERY:
                 refinery += 1
-        return min(mining, refinery)
+        return mining, refinery
+
+    def get_mining_affinity_counts(self):
+        """ Return tuple of mining/refinery affinities """
+        mining = 0
+        refinery = 0
+        for npc in self.npcs:
+            room_type = getattr(npc, "affinity", None)
+            if room_type == RoomType.MINING:
+                mining += 1
+            elif room_type == RoomType.REFINERY:
+                refinery += 1
+        return mining, refinery
