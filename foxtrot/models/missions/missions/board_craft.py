@@ -8,11 +8,7 @@ logger = log.create_logger(__name__)
 
 class BoardCraftMission(Mission):
     def __init__(self, random, world):
-        ship = None
-        for chunk in world.chunks[::-1]:
-            if isinstance(chunk, Ship):
-                ship = chunk
-                break
+        ship = world.get_ship()
         if ship == None:
             logger.warning("Ship not found in world!")
             return

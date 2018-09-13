@@ -8,11 +8,7 @@ logger = log.create_logger(__name__)
 
 class BuildoutMission(Mission):
     def __init__(self, random, world):
-        colony = None
-        for chunk in world.chunks[::-1]:
-            if isinstance(chunk, Colony):
-                colony = chunk
-                break
+        colony = world.get_colony()
         if colony == None:
             logger.warning("Colony not found in world!")
             return

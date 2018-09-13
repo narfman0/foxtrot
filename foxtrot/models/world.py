@@ -156,7 +156,7 @@ class World:
                 return chunk
 
     def get_colony(self):
-        for chunk in self.chunks:
+        for chunk in self.chunks[::-1]:
             if isinstance(chunk, Colony):
                 return chunk
 

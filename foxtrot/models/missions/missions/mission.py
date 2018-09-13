@@ -2,6 +2,9 @@ from abc import ABC
 
 
 class Mission(ABC):
+    def __init__(self, random, world):
+        pass
+
     def update(self, world):
         if hasattr(self, "trigger"):
             self.trigger.update(world)
