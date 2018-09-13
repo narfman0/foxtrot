@@ -224,7 +224,7 @@ class GameplayScreen:
         for tile_x, tile_y, tile in chunk.tiles:
             world_x = (chunk.x - chunk.width // 2 + tile_x) - self.world.player.x
             world_y = (chunk.y - chunk.height // 2 + tile_y) - self.world.player.y
-            self.draw_tile(world_x, world_y, str(tile))
+            self.draw_tile(world_x, world_y, tile)
         for npc in chunk.npcs:
             self.draw_npc(npc)
 
@@ -244,7 +244,9 @@ class GameplayScreen:
             and render_y > -TILE_WIDTH
             and render_y < pyxel.height + TILE_WIDTH
         ):
-            pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
+            pyxel.blt(render_x - 1, render_y - 6, 0, 8 * tile, 0, 8, 8, 13)
+            if self.debug:
+                pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
 
     def chunk_active(self, chunk):
         """ Check if chunk should be active or not """

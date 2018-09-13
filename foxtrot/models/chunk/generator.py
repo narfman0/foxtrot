@@ -469,22 +469,34 @@ class Generator:
         for x in range(0, self.width):
             if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
                 break
-            self.grid[x][y] = CORRIDOR
+            if x == 0:
+                self.grid[x][y] = DOOR
+            else:
+                self.grid[x][y] = CORRIDOR
         for x in range(self.width - 1, 0, -1):
             if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
                 break
-            self.grid[x][y] = CORRIDOR
+            if x == self.width - 1:
+                self.grid[x][y] = DOOR
+            else:
+                self.grid[x][y] = CORRIDOR
         self.airlock_y = y
         # create north/south airlocks
         x = random.randint(self.width // 3, 2 * self.width // 3)
         for y in range(self.height - 1, 0, -1):
             if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
                 break
-            self.grid[x][y] = CORRIDOR
+            if y == self.height - 1:
+                self.grid[x][y] = DOOR
+            else:
+                self.grid[x][y] = CORRIDOR
         for y in range(0, self.height):
             if self.grid[x][y] == CORRIDOR or self.grid[x][y] == FLOOR:
                 break
-            self.grid[x][y] = CORRIDOR
+            if y == 0:
+                self.grid[x][y] = DOOR
+            else:
+                self.grid[x][y] = CORRIDOR
         self.airlock_x = x
 
     def prune_deadends(self, amount):
