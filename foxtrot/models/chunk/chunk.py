@@ -46,6 +46,7 @@ class Chunk:
         self.room_min_size = room_min_size
         self.room_max_size = room_max_size
         self.room_tries = room_tries
+        self.tileset = random.randint(0, 7)
         if create:
             self.create()
 

@@ -224,7 +224,7 @@ class GameplayScreen:
         for tile_x, tile_y, tile in chunk.tiles:
             world_x = (chunk.x - chunk.width // 2 + tile_x) - self.world.player.x
             world_y = (chunk.y - chunk.height // 2 + tile_y) - self.world.player.y
-            self.draw_tile(world_x, world_y, tile)
+            self.draw_tile(world_x, world_y, chunk.tileset, tile)
         for npc in chunk.npcs:
             self.draw_npc(npc)
 
@@ -233,7 +233,7 @@ class GameplayScreen:
         render_y = TILE_WIDTH * (self.world.player.y - npc.y) + pyxel.height // 2
         pyxel.circ(render_x, render_y, TILE_WIDTH // 2, 11)
 
-    def draw_tile(self, x, y, tile):
+    def draw_tile(self, x, y, tileset, tile):
         """ Draw a tile given world coordinates x, y """
         render_x = x * TILE_WIDTH + pyxel.width // 2
         render_y = -y * TILE_WIDTH + pyxel.height // 2
@@ -244,7 +244,7 @@ class GameplayScreen:
             and render_y > -TILE_WIDTH
             and render_y < pyxel.height + TILE_WIDTH
         ):
-            pyxel.blt(render_x - 1, render_y - 6, 0, 8 * tile, 0, 8, 8, 13)
+            pyxel.blt(render_x - 1, render_y - 6, 0, 8 * tile, 8 * tileset, 8, 8, 13)
             if self.debug:
                 pyxel.text(render_x + 2, render_y - 5, str(tile), 9)
 
